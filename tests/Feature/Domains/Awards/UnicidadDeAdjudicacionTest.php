@@ -35,15 +35,6 @@ final class UnicidadDeAdjudicacionTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (DB::connection()->getDriverName() !== 'pgsql') {
-            $this->markTestSkipped('Esta garantía la aporta un índice parcial de PostgreSQL.');
-        }
-    }
-
     /** Construye la cadena mínima de datos necesaria: promoción → vivienda. */
     private function crearVivienda(): string
     {

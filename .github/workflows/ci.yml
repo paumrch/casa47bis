@@ -1,0 +1,287 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # Versión de PHP para los trabajos que no forman parte de la matriz.
+  PHP_VERSION: "8.4"
+
+jobs:
+  lint:
+    name: Estilo (Pint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache de dependencias de Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - run: composer install --no-interaction --no-progress --prefer-dist
+
+      - run: vendor/bin/pint --test
+
+  static:
+    name: Análisis estático
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache de dependencias de Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - run: composer install --no-interaction --no-progress --prefer-dist
+
+      # Nivel 8 sobre app, database y tests. La configuración vive en phpstan.neon,
+      # no aquí: la CI debe ejecutar exactamente lo mismo que se ejecuta en local
+      # con `composer static`, o deja de servir como red de seguridad.
+      - name: PHPStan / Larastan
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+  test:
+    name: Tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.3", "8.4"]
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: casa47_test
+          POSTGRES_USER: casa47
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U casa47 -d casa47_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+      minio:
+        image: bitnami/minio:latest
+        env:
+          MINIO_ROOT_USER: casa47bis
+          MINIO_ROOT_PASSWORD: casa47bis123
+          MINIO_DEFAULT_BUCKETS: casa47bis
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd "curl -fsS http://127.0.0.1:9000/minio/health/live"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: casa47_test
+      DB_USERNAME: casa47
+      DB_PASSWORD: secret
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: casa47bis
+      AWS_SECRET_ACCESS_KEY: casa47bis123
+      AWS_DEFAULT_REGION: es-madrid-1
+      AWS_BUCKET: casa47bis
+      AWS_ENDPOINT: http://127.0.0.1:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo_pgsql, intl, opcache, zip, soap
+          coverage: none
+
+      - name: Cache de dependencias de Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ matrix.php }}-
+
+      - run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Preparar entorno
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - run: php artisan migrate --force
+
+      - run: php artisan test
+
+  architecture:
+    name: Fronteras de arquitectura
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache de dependencias de Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - run: composer install --no-interaction --no-progress --prefer-dist
+
+      # Fronteras entre módulos, con deptrac. Las capas y las dependencias
+      # permitidas están en deptrac.yaml, comentadas una a una.
+      #
+      # Este paso es el que impide que el "monolito modular" se convierta en una
+      # bola de barro con carpetas bonitas: si alguien hace que el dominio de
+      # elegibilidad dependa de Laravel, o que un adaptador de integración toque
+      # una regla de negocio, la CI se pone en rojo.
+      - name: Fronteras entre módulos (deptrac)
+        run: vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --fail-on-uncovered
+
+  portability:
+    name: Portabilidad (${{ matrix.disk }})
+    runs-on: ubuntu-latest
+    # Pieza central de la tesis del proyecto: la aplicación afirma que el
+    # almacenamiento de objetos es intercambiable por variables de entorno,
+    # sin tocar código. Este trabajo no se fía de la afirmación: ejecuta la
+    # MISMA suite de tests dos veces, una contra MinIO (S3-compatible, lo
+    # que se usaría en Azure/AWS/OVH/CPD propio) y otra contra el disco
+    # local (el mínimo común denominador, sin dependencias externas). Si la
+    # aplicación tuviera código que solo funciona con S3 o solo con local,
+    # una de las dos ejecuciones fallaría.
+    #
+    # Verificado en local: la misma suite pasa contra ambos discos. El día que
+    # deje de hacerlo, se habrá perdido la portabilidad y este trabajo lo dirá
+    # antes de que llegue a producción.
+    strategy:
+      fail-fast: false
+      matrix:
+        disk: [s3, local]
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: casa47_test
+          POSTGRES_USER: casa47
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U casa47 -d casa47_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+      minio:
+        image: bitnami/minio:latest
+        env:
+          MINIO_ROOT_USER: casa47bis
+          MINIO_ROOT_PASSWORD: casa47bis123
+          MINIO_DEFAULT_BUCKETS: casa47bis
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd "curl -fsS http://127.0.0.1:9000/minio/health/live"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: casa47_test
+      DB_USERNAME: casa47
+      DB_PASSWORD: secret
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      FILESYSTEM_DISK: ${{ matrix.disk }}
+      AWS_ACCESS_KEY_ID: casa47bis
+      AWS_SECRET_ACCESS_KEY: casa47bis123
+      AWS_DEFAULT_REGION: es-madrid-1
+      AWS_BUCKET: casa47bis
+      AWS_ENDPOINT: http://127.0.0.1:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo_pgsql, intl, opcache, zip, soap
+          coverage: none
+
+      - name: Cache de dependencias de Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Preparar entorno
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - run: php artisan migrate --force
+
+      - name: Tests contra disco "${{ matrix.disk }}"
+        run: php artisan test
+
+  security:
+    name: Auditoría de dependencias
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache de dependencias de Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - run: composer install --no-interaction --no-progress --prefer-dist
+
+      - run: composer audit

@@ -34,7 +34,13 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/private'),
             'serve' => true,
-            'throw' => false,
+
+            // Deliberado: `throw => true`. El valor por defecto de Laravel es false,
+            // que hace que una escritura fallida devuelva false en silencio. Para
+            // documentación acreditativa de un expediente administrativo eso es
+            // inaceptable: si no se guarda la nómina de alguien hay que enterarse
+            // ahora, no cuando un gestor abra el expediente y no encuentre nada.
+            'throw' => true,
             'report' => false,
         ],
 
@@ -56,7 +62,10 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+
+            // Mismo motivo que en el disco local: los fallos de escritura no se
+            // silencian nunca.
+            'throw' => true,
             'report' => false,
         ],
 

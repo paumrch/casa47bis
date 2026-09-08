@@ -1,0 +1,133 @@
+# Entorno de desarrollo local. PostgreSQL es el único almacén (BD, colas,
+# sesiones, caché) y MinIO simula el almacenamiento de objetos S3 que se usará
+# en producción, así que lo que aquí funciona funciona igual en cualquier
+# proveedor. Las contraseñas de este fichero son de desarrollo, evidentes a
+# propósito (dev/dev); en producción vienen del gestor de secretos del
+# proveedor (Key Vault, Secrets Manager, Vault…), nunca de un fichero en el
+# repositorio.
+
+name: casa47bis
+
+services:
+  app:
+    build:
+      context: .
+      target: app
+    ports:
+      - "8000:8000"
+    # En desarrollo no cacheamos config/rutas/vistas (el entrypoint de
+    # producción sí lo hace): con código montado por volumen, cachear
+    # escondería los cambios en caliente.
+    entrypoint: []
+    command: ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: casa47bis
+      DB_USERNAME: casa47bis
+      DB_PASSWORD: dev
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: dev
+      AWS_SECRET_ACCESS_KEY: devdevdev
+      AWS_DEFAULT_REGION: es-madrid-1
+      AWS_BUCKET: casa47bis
+      AWS_ENDPOINT: http://minio:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+    volumes:
+      - .:/app
+      - storage_data:/app/storage/app
+      - vendor_data:/app/vendor
+      - build_data:/app/public/build
+      - bootstrap_cache:/app/bootstrap/cache
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/up"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  worker:
+    build:
+      context: .
+      target: app
+    entrypoint: []
+    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=1"]
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: casa47bis
+      DB_USERNAME: casa47bis
+      DB_PASSWORD: dev
+      QUEUE_CONNECTION: database
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: dev
+      AWS_SECRET_ACCESS_KEY: devdevdev
+      AWS_DEFAULT_REGION: es-madrid-1
+      AWS_BUCKET: casa47bis
+      AWS_ENDPOINT: http://minio:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+    volumes:
+      - .:/app
+      - storage_data:/app/storage/app
+      - vendor_data:/app/vendor
+      - build_data:/app/public/build
+      - bootstrap_cache:/app/bootstrap/cache
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: casa47bis
+      POSTGRES_USER: casa47bis
+      POSTGRES_PASSWORD: dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U casa47bis -d casa47bis"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: dev
+      MINIO_ROOT_PASSWORD: devdevdev
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:
+  minio_data:
+  storage_data:
+  vendor_data:
+  build_data:
+  bootstrap_cache:

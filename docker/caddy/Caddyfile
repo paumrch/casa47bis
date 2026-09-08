@@ -1,0 +1,22 @@
+# Caddyfile de FrankenPHP para CASA47bis en producción.
+# Escucha en HTTP interno (8000): la terminación TLS la hace el balanceador
+# del proveedor (Azure/AWS/OVH/CPD propio), no la imagen de la aplicación.
+{
+	skip_install_trust
+	auto_https off
+	admin off
+
+	{$FRANKENPHP_CONFIG}
+}
+
+:{$SERVER_PORT:8000} {
+	root * public/
+	encode zstd gzip
+
+	log {
+		output stdout
+		format json
+	}
+
+	php_server
+}

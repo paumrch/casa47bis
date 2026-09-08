@@ -23,8 +23,26 @@
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!--
+            Las pruebas se ejecutan contra PostgreSQL, NO contra SQLite en memoria.
+
+            Es más lento y exige tener la base levantada, y aun así es la única opción
+            honesta: el esquema de este proyecto usa deliberadamente características de
+            PostgreSQL que SQLite no tiene —índices únicos parciales, tablas
+            particionadas, extensiones, restricciones CHECK con expresiones—. Probar
+            sobre SQLite daría una suite verde que no demuestra nada sobre lo que
+            realmente se despliega, que es la peor clase de prueba: la que da confianza
+            sin darla.
+
+            En local: `make test`, que levanta la base con compose.
+            En integración continua: el servicio postgres:17 del workflow.
+        -->
+        <env name="DB_CONNECTION" value="pgsql"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="5432"/>
+        <env name="DB_DATABASE" value="casa47_test"/>
+        <env name="DB_USERNAME" value="casa47"/>
+        <env name="DB_PASSWORD" value="secret"/>
         <env name="DB_URL" value=""/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>

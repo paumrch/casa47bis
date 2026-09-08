@@ -43,6 +43,11 @@ deptrac:
         - type: directory
           value: app/Domains/Notifications/.*
 
+    - name: Documents
+      collectors:
+        - type: directory
+          value: app/Domains/Documents/.*
+
     - name: Housing
       collectors:
         - type: directory
@@ -148,6 +153,16 @@ deptrac:
       - Psr
       - PhpCore
 
+    # Custodia de documentación acreditativa. Habla con el almacenamiento a través del
+    # puerto, así que no sabe si detrás hay S3, MinIO o un disco local.
+    Documents:
+      - Documents
+      - Audit
+      - IntegrationContracts
+      - Framework
+      - Psr
+      - PhpCore
+
     # La auditoría no conoce ningún dominio concreto: recibe cadenas y metadatos.
     # Si algún día necesitara importar una solicitud, sería señal de que se está
     # metiendo lógica de negocio en la traza.
@@ -208,6 +223,7 @@ deptrac:
       - Framework
       - Psr
       - PhpCore
+      - Documents
 
     Console:
       - Console
@@ -221,6 +237,7 @@ deptrac:
       - Framework
       - Psr
       - PhpCore
+      - Documents
 
     Providers:
       - Providers
@@ -236,6 +253,7 @@ deptrac:
       - Framework
       - Psr
       - PhpCore
+      - Documents
 
     Framework:
       - Framework

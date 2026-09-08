@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Domains\Documents\Contracts\MalwareScanner;
+use App\Domains\Documents\Scanning\AlwaysCleanScanner;
 use App\Domains\Shared\Outbox\OutboxDispatcher;
 use App\Integrations\Contracts\DataVerificationGateway;
+use App\Integrations\Contracts\DocumentStorageGateway;
 use App\Integrations\Contracts\NotificationGateway;
+use App\Integrations\Storage\FilesystemDocumentStorage;
 use Carbon\Carbon;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -35,6 +40,19 @@ final class AppServiceProvider extends ServiceProvider
             NotificationGateway::class,
             static fn ($app): NotificationGateway => $app->make((string) config('integrations.notifications')),
         );
+
+        $this->app->bind(
+            DocumentStorageGateway::class,
+            static fn ($app): DocumentStorageGateway => new FilesystemDocumentStorage(
+                Storage::disk((string) config('filesystems.default')),
+            ),
+        );
+
+        // En desarrollo, un escáner que da todo por limpio. En producción va contra un
+        // antivirus real, y hasta que un documento no está analizado no puede
+        // descargarse ni darse por válido: el estado «pendiente» es una barrera, no una
+        // etiqueta informativa.
+        $this->app->bind(MalwareScanner::class, AlwaysCleanScanner::class);
 
         $this->app->singleton(OutboxDispatcher::class, static function ($app): OutboxDispatcher {
             $dispatcher = new OutboxDispatcher(

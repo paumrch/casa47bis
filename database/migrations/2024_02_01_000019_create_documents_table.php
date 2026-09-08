@@ -36,6 +36,18 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('document_type');
+
+            // Un mismo contenido no se guarda dos veces en el mismo expediente.
+            //
+            // La gente sube el mismo PDF varias veces «por si acaso», y la comprobación
+            // previa en la aplicación deja una ventana de carrera entre dos subidas
+            // simultáneas idénticas. Esta restricción la cierra: la garantía vive en la
+            // base, donde resiste a la concurrencia y a un error de código, igual que la
+            // unicidad de adjudicación.
+            $table->unique(
+                ['documentable_type', 'documentable_id', 'checksum_sha256'],
+                'documents_no_duplicados_por_expediente',
+            );
         });
 
         DB::statement("ALTER TABLE documents ADD CONSTRAINT documents_scan_status_check CHECK (scan_status IN ('pending', 'clean', 'infected', 'error'))");

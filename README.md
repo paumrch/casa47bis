@@ -65,9 +65,12 @@ salida de eventos y auditoría.
 | Fronteras entre módulos | ✅ | Verificadas por CI, no declaradas |
 | **Portal público completo** | ✅ | **Cero JavaScript, cero cookies, 2 peticiones** |
 | Presupuesto de bytes que rompe la CI | ✅ | El peso no puede crecer sin que nadie se entere |
+| **Modo degradado ante la AGE** | ✅ | Si un servicio no responde, el expediente sigue |
+| Notificación fehaciente vs aviso | ✅ | Confundirlas genera indefensión |
+| Custodia documental | ✅ | MIME real, deduplicación, URLs firmadas, antivirus |
 | Asistente de solicitud | ⏳ | |
 | Backoffice de gestión | ⏳ | |
-| Adaptadores reales (SCSP, Cl@ve, firma) | ⏳ | |
+| Adaptadores reales (SCSP, Cl@ve, firma) | ⏳ | Requieren alta administrativa, no código |
 
 ## Lo que verificamos, en vez de afirmarlo
 
@@ -86,6 +89,9 @@ en seis meses.**
 | El portal no instala cookies | Se inspeccionan las cabeceras de la respuesta |
 | El peso no crece sin control | Presupuesto de bytes por página, con límite duro |
 | El sistema es portable | Suite ejecutada contra dos almacenamientos distintos |
+| El procedimiento no se detiene si falla la AGE | Se programa la caída de un servicio y se comprueba el desenlace |
+| Un documento no se guarda dos veces | Restricción única en la base, no comprobación en PHP |
+| Un .pdf que no es un PDF se rechaza | Se valida el MIME real del contenido, no la extensión |
 | Nada queda a medias si falla un paso | Se rompe el último paso y se comprueba que no queda rastro |
 | Dos trabajadores no toman el mismo evento | Dos conexiones reales compitiendo por la misma bandeja |
 | La traza de auditoría detecta manipulación | Se altera un evento y la verificación lo señala |

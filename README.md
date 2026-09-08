@@ -63,7 +63,8 @@ salida de eventos y auditoría.
 | Colas sobre PostgreSQL, sin Redis | ✅ | `SKIP LOCKED` probado con dos conexiones simultáneas |
 | Catálogo de viviendas y convocatorias | ✅ | Modelos, filtros, búsqueda tolerante a erratas |
 | Fronteras entre módulos | ✅ | Verificadas por CI, no declaradas |
-| Portal público | ⏳ | |
+| **Portal público completo** | ✅ | **Cero JavaScript, cero cookies, 2 peticiones** |
+| Presupuesto de bytes que rompe la CI | ✅ | El peso no puede crecer sin que nadie se entere |
 | Asistente de solicitud | ⏳ | |
 | Backoffice de gestión | ⏳ | |
 | Adaptadores reales (SCSP, Cl@ve, firma) | ⏳ | |
@@ -80,6 +81,10 @@ en seis meses.**
 | El procedimiento no tiene estados inalcanzables | Recorrido del grafo en una prueba |
 | Los umbrales de renta son exactos al céntimo | Casos límite por encima y por debajo |
 | Una vivienda no se adjudica dos veces | Índice único parcial + prueba de violación |
+| El portal no entrega JavaScript | Se cuenta cada etiqueta `<script>` en cada página |
+| El portal no carga nada de terceros | Se buscan orígenes externos en el HTML servido |
+| El portal no instala cookies | Se inspeccionan las cabeceras de la respuesta |
+| El peso no crece sin control | Presupuesto de bytes por página, con límite duro |
 | El sistema es portable | Suite ejecutada contra dos almacenamientos distintos |
 | Nada queda a medias si falla un paso | Se rompe el último paso y se comprueba que no queda rastro |
 | Dos trabajadores no toman el mismo evento | Dos conexiones reales compitiendo por la misma bandeja |
@@ -90,6 +95,39 @@ en seis meses.**
 composer check   # lint · análisis estático · fronteras · pruebas
 ```
 
+## La cifra
+
+El portal analizado entrega **1.333.490 bytes de JavaScript** para pintar un listado de
+viviendas, sobre una plantilla vacía de 1.627 bytes de HTML.
+
+Este portal, medido el 8 de septiembre de 2026 sobre el catálogo completo con paginación,
+filtros y 12 fichas:
+
+| Página | HTML | Peticiones | JavaScript | Cookies |
+|---|---|---|---|---|
+| Inicio | 5.862 B | 2 | **0** | **0** |
+| Catálogo de viviendas | 19.814 B | 2 | **0** | **0** |
+| Catálogo filtrado | 19.625 B | 2 | **0** | **0** |
+| Convocatorias | 3.966 B | 2 | **0** | **0** |
+| Requisitos | 4.456 B | 2 | **0** | **0** |
+
+La hoja de estilos —una, escrita a mano— pesa **8.487 bytes** (2.822 comprimida) y se
+comparte entre todas las páginas.
+
+> **Catálogo completo: 28.301 bytes** (HTML + CSS) frente a **1.333.490 bytes** de sólo el
+> JavaScript del portal analizado. **47 veces menos**, contando el CSS de nuestro lado y
+> sin contar el HTML ni el CSS del suyo.
+
+Estas cifras no están escritas a mano en este README: hay un **presupuesto de bytes** que
+rompe la integración continua si alguien las empeora. El día que se añada una librería
+«pequeña» al portal público, la CI se pondrá en rojo y habrá que justificarlo en la
+revisión, que es donde debe discutirse.
+
+**Este proyecto no tiene `package.json`.** No hay npm, ni Vite, ni Tailwind, ni
+`node_modules`, ni paso de compilación de front-end. Se eliminaron cuando quedó claro que
+no resolvían ningún problema que este portal tuviera. La imagen de contenedor perdió con
+ello una etapa entera de construcción.
+
 ## Cómo levantarlo
 
 ```bash
@@ -97,6 +135,10 @@ make up        # aplicación, PostgreSQL y almacenamiento de objetos
 make migrate
 make test
 ```
+
+Las pruebas exigen PostgreSQL de verdad, no SQLite en memoria: el esquema usa índices
+únicos parciales, tablas particionadas y extensiones, y una suite verde sobre SQLite no
+demostraría nada sobre lo que se despliega.
 
 Detalle de operación, despliegue y copias en [`docs/operacion.md`](docs/operacion.md).
 

@@ -30,4 +30,18 @@ interface RuleSet
     public function effectiveFrom(): \DateTimeImmutable;
 
     public function evaluate(ApplicantProfile $profile): EligibilityResult;
+
+    /**
+     * Los requisitos, redactados para el ciudadano.
+     *
+     * Existe para que la página pública de requisitos se genere DESDE AQUÍ y no se
+     * escriba a mano en una plantilla. Es el mismo problema que ya nos mordió con la
+     * enumeración de estados y la restricción de la base: dos copias de la misma verdad
+     * acaban divergiendo, y aquí la divergencia significa publicar unos requisitos y
+     * aplicar otros. En un procedimiento con derechos de por medio, eso no es un fallo
+     * de contenido: es un vicio del procedimiento.
+     *
+     * @return list<array{code: string, title: string, detail: string}>
+     */
+    public function describe(): array;
 }

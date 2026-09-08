@@ -169,6 +169,22 @@ class Property extends Model
     }
 
     /**
+     * Filtro de catálogo: al menos N dormitorios.
+     *
+     * Es el que usa el buscador público, y no el de número exacto. Una familia de cinco
+     * que filtra por tres dormitorios no quiere que se le oculten los de cuatro; el
+     * filtro exacto convierte una búsqueda en un acertijo. El de número exacto se
+     * conserva para la gestión interna, donde sí se busca un tipo concreto.
+     *
+     * @param  Builder<Property>  $query
+     * @return Builder<Property>
+     */
+    public function scopeWithMinimumBedrooms(Builder $query, int $bedrooms): Builder
+    {
+        return $query->where('bedrooms', '>=', $bedrooms);
+    }
+
+    /**
      * Filtro de catálogo: renta mensual no superior al límite dado.
      *
      * @param  Builder<Property>  $query

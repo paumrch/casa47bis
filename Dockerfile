@@ -17,8 +17,17 @@
 #     rendimiento. Request por request, como cualquier php-fpm, es más fácil
 #     de razonar y de migrar a otro runtime si algún día hiciera falta.
 #
-# Cuatro etapas: dependencias PHP (composer), assets (node/vite), imagen de
-# ejecución. Cada etapa cachea capas independientes de las demás.
+# DOS etapas: dependencias PHP e imagen de ejecución.
+#
+# Había una tercera para compilar los assets con Node y Vite. Se ha eliminado
+# junto con package.json, vite.config.js y Tailwind, porque el portal público se
+# sirve con una hoja de estilos escrita a mano y cero JavaScript. No hay nada que
+# compilar.
+#
+# El efecto sobre esta imagen no es cosmético: desaparece una imagen base de Node,
+# desaparece la instalación de un árbol de dependencias de npm y desaparece un
+# paso de compilación que podía fallar. La imagen se construye con menos piezas
+# porque la aplicación tiene menos piezas.
 # ---------------------------------------------------------------------------
 
 ARG PHP_VERSION=8.4
@@ -45,23 +54,7 @@ COPY . .
 RUN composer dump-autoload --optimize --no-dev --classmap-authoritative
 
 # ---------------------------------------------------------------------------
-# Etapa 2: assets front-end (Tailwind + Vite)
-# ---------------------------------------------------------------------------
-FROM node:22-alpine AS assets
-
-WORKDIR /app
-
-COPY package.json package-lock.json* .npmrc ./
-RUN [ -f package-lock.json ] && npm ci --ignore-scripts || npm install --ignore-scripts
-
-COPY resources ./resources
-COPY vite.config.js ./
-COPY public ./public
-
-RUN npm run build
-
-# ---------------------------------------------------------------------------
-# Etapa 3: imagen final — FrankenPHP (Caddy + PHP 8.4) sobre Alpine
+# Etapa 2: imagen final — FrankenPHP (Caddy + PHP 8.4) sobre Alpine
 # ---------------------------------------------------------------------------
 FROM dunglas/frankenphp:1-php${PHP_VERSION}-alpine AS app
 
@@ -92,7 +85,6 @@ WORKDIR /app
 # aprovechar la caché de build.
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
-COPY --from=assets /app/public/build ./public/build
 
 RUN mkdir -p storage/framework/{cache,sessions,testing,views} storage/logs bootstrap/cache \
     && chmod +x docker/entrypoint.sh \

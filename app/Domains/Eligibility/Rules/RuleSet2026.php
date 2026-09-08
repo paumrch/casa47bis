@@ -43,6 +43,50 @@ final class RuleSet2026 implements RuleSet
         return new \DateTimeImmutable('2026-01-01 00:00:00');
     }
 
+    /**
+     * @return list<array{code: string, title: string, detail: string}>
+     */
+    public function describe(): array
+    {
+        $iprem = Money::fromEuros(self::IPREM_ANUAL_EUROS);
+
+        return [
+            [
+                'code' => 'income',
+                'title' => 'Ingresos de la unidad de convivencia',
+                'detail' => sprintf(
+                    'Los ingresos netos anuales conjuntos deben situarse entre %s y %s, '.
+                    'es decir, entre 2 y 7,5 veces el IPREM anual vigente (%s).',
+                    $iprem->times(self::MIN_IPREM_MULTIPLIER),
+                    $iprem->times(self::MAX_IPREM_MULTIPLIER),
+                    $iprem,
+                ),
+            ],
+            [
+                'code' => 'residence',
+                'title' => 'Nacionalidad o residencia legal',
+                'detail' => 'Debe acreditarse nacionalidad española o residencia legal en España.',
+            ],
+            [
+                'code' => 'property_ownership',
+                'title' => 'No ser titular de vivienda',
+                'detail' => 'Ningún miembro de la unidad de convivencia puede ser titular de una vivienda '.
+                    'en propiedad. Se exceptúan los casos en que la vivienda no es utilizable como '.
+                    'residencia y así se acredita.',
+            ],
+            [
+                'code' => 'tax_compliance',
+                'title' => 'Obligaciones tributarias',
+                'detail' => 'Debe acreditarse estar al corriente de las obligaciones con la Agencia Tributaria.',
+            ],
+            [
+                'code' => 'social_security_compliance',
+                'title' => 'Obligaciones con la Seguridad Social',
+                'detail' => 'Debe acreditarse estar al corriente de las obligaciones con la Seguridad Social.',
+            ],
+        ];
+    }
+
     public function evaluate(ApplicantProfile $profile): EligibilityResult
     {
         return new EligibilityResult(

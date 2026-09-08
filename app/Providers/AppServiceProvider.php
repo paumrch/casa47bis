@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Domains\Shared\Outbox\OutboxDispatcher;
+use Carbon\Carbon;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Psr\Log\LoggerInterface;
 
@@ -39,6 +41,17 @@ final class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        // Versión del CSS derivada de su fecha de modificación: invalida la caché al
+        // desplegar sin necesitar una cadena de compilación ni un manifiesto de assets.
+        View::share('cssVersion', $this->cssVersion());
+
+        Carbon::setLocale('es');
+    }
+
+    private function cssVersion(): string
+    {
+        $path = public_path('assets/portal.css');
+
+        return file_exists($path) ? (string) filemtime($path) : '0';
     }
 }

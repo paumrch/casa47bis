@@ -1,0 +1,200 @@
+/*
+ * Hoja de estilos del portal público.
+ *
+ * Escrita a mano, sin framework y sin paso de compilación. No es nostalgia: es que
+ * este portal no tiene ningún problema que un framework de CSS resuelva mejor. Son
+ * unos pocos kilobytes, se lee entera de una sentada y no hay que actualizar nada
+ * cuando salga la siguiente versión mayor de nadie.
+ *
+ * El proyecto entero eliminó su cadena de compilación de front-end: no hay npm, ni
+ * Vite, ni node_modules. Un fichero CSS y cero JavaScript.
+ */
+
+:root {
+  --texto: #1b1b1b;
+  --texto-suave: #4a4a4a;
+  --fondo: #ffffff;
+  --fondo-alt: #f4f4f2;
+  --borde: #d3d3cf;
+  --acento: #12513f;
+  --acento-claro: #e6f0ec;
+  --foco: #b8541a;
+  --error: #a3121a;
+  --radio: 4px;
+  --medida: 68ch;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  /* Tipografía del sistema: cero peticiones de red por fuentes. */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+/* Salto al contenido: primero en el orden de tabulación, visible sólo al enfocarlo. */
+.saltar {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--acento);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  z-index: 100;
+}
+.saltar:focus { left: 0; }
+
+/*
+ * Texto sólo para lectores de pantalla.
+ *
+ * No usa display:none ni visibility:hidden, que lo ocultarían también al lector. Lo saca
+ * del flujo visual conservándolo en el árbol de accesibilidad, que es justo lo que hace
+ * falta para que un enlace "Siguiente" diga además a qué página lleva.
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Un único estilo de foco, visible sobre cualquier fondo. */
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+}
+
+a { color: var(--acento); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+.contenedor { max-width: 76rem; margin: 0 auto; padding: 0 1rem; }
+
+header.principal { border-bottom: 1px solid var(--borde); background: var(--fondo); }
+header.principal .contenedor { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding-block: 1rem; }
+.marca { font-weight: 700; font-size: 1.25rem; text-decoration: none; color: var(--texto); }
+.marca span { color: var(--acento); }
+
+nav.principal ul { display: flex; flex-wrap: wrap; gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
+nav.principal a { text-decoration: none; color: var(--texto-suave); }
+nav.principal a:hover, nav.principal a[aria-current="page"] { color: var(--acento); text-decoration: underline; }
+nav.principal a[aria-current="page"] { font-weight: 600; }
+
+main { padding-block: 2rem 3rem; }
+main > * + * { margin-top: 1.5rem; }
+
+h1 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem); line-height: 1.2; margin: 0 0 0.5rem; }
+h2 { font-size: 1.35rem; line-height: 1.3; margin: 2rem 0 0.75rem; }
+h3 { font-size: 1.1rem; margin: 1.25rem 0 0.5rem; }
+p, li { max-width: var(--medida); }
+
+.entradilla { font-size: 1.15rem; color: var(--texto-suave); }
+
+/* --- Buscador ---------------------------------------------------------- */
+.filtros {
+  background: var(--fondo-alt);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.25rem;
+}
+.filtros .campos { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+.campo label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+.campo .ayuda { display: block; font-weight: 400; color: var(--texto-suave); font-size: 0.85rem; }
+input[type="text"], input[type="number"], select {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--texto);
+  background: var(--fondo);
+  border: 1px solid #8a8a85;
+  border-radius: var(--radio);
+}
+.casilla { display: flex; align-items: flex-start; gap: 0.5rem; margin-top: 1.6rem; }
+.casilla input { width: 1.15rem; height: 1.15rem; margin: 0.2rem 0 0; }
+.casilla label { font-weight: 600; font-size: 0.9rem; }
+.acciones { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 1rem; }
+
+.boton {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--acento);
+  border: 1px solid var(--acento);
+  border-radius: var(--radio);
+  cursor: pointer;
+  text-decoration: none;
+}
+.boton:hover { background: #0d3f31; }
+.boton.secundario { color: var(--acento); background: transparent; }
+.boton.secundario:hover { background: var(--acento-claro); }
+
+/* --- Resultados -------------------------------------------------------- */
+.resumen-resultados { font-weight: 600; }
+
+.tarjetas { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); list-style: none; padding: 0; margin: 0; }
+.tarjeta { border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; display: flex; flex-direction: column; background: var(--fondo); }
+/* Proporción reservada: evita que el texto salte cuando carga la imagen. */
+.tarjeta .imagen { aspect-ratio: 3 / 2; background: var(--acento-claro); display: grid; place-items: center; color: var(--acento); font-size: 0.85rem; }
+.tarjeta .cuerpo { padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+.tarjeta h3 { margin: 0; font-size: 1.05rem; }
+.tarjeta h3 a { text-decoration: none; }
+.tarjeta h3 a:hover { text-decoration: underline; }
+.tarjeta .ubicacion { color: var(--texto-suave); font-size: 0.9rem; margin: 0; }
+.tarjeta .renta { font-size: 1.2rem; font-weight: 700; margin: 0; }
+.tarjeta .renta small { font-size: 0.8rem; font-weight: 400; color: var(--texto-suave); }
+.tarjeta dl { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; margin: 0; font-size: 0.9rem; color: var(--texto-suave); }
+.tarjeta dl div { display: flex; gap: 0.3rem; }
+.tarjeta dt { font-weight: 400; }
+.tarjeta dd { margin: 0; font-weight: 600; color: var(--texto); }
+
+.etiqueta { display: inline-block; padding: 0.15rem 0.5rem; font-size: 0.8rem; font-weight: 600; border-radius: var(--radio); background: var(--acento-claro); color: var(--acento); }
+.etiqueta.cerrada { background: #f0eae4; color: #6b4a2e; }
+
+.vacio { background: var(--fondo-alt); border: 1px solid var(--borde); border-radius: var(--radio); padding: 2rem; }
+.vacio h2 { margin-top: 0; }
+
+/* --- Ficha ------------------------------------------------------------- */
+.ficha { display: grid; gap: 2rem; grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr); align-items: start; }
+.datos { border-collapse: collapse; width: 100%; }
+.datos th, .datos td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--borde); vertical-align: top; }
+.datos th { font-weight: 600; width: 45%; }
+.panel { border: 1px solid var(--borde); border-radius: var(--radio); padding: 1.25rem; background: var(--fondo-alt); position: sticky; top: 1rem; }
+.panel .renta { font-size: 1.6rem; font-weight: 700; margin: 0 0 0.25rem; }
+
+/* --- Paginación -------------------------------------------------------- */
+.paginacion ul { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0; }
+.paginacion a, .paginacion span { display: inline-block; padding: 0.4rem 0.7rem; border: 1px solid var(--borde); border-radius: var(--radio); text-decoration: none; }
+.paginacion [aria-current="page"] { background: var(--acento); color: #fff; border-color: var(--acento); font-weight: 600; }
+.paginacion .desactivado { color: #8a8a85; }
+
+footer.principal { border-top: 1px solid var(--borde); background: var(--fondo-alt); padding-block: 2rem; margin-top: 3rem; font-size: 0.92rem; }
+footer.principal ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 1.25rem; }
+
+@media (max-width: 48rem) {
+  .ficha { grid-template-columns: 1fr; }
+  .panel { position: static; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Impresión: las personas imprimen las fichas de vivienda para llevarlas a la cita. */
+@media print {
+  header.principal nav, footer.principal, .filtros, .panel .boton { display: none; }
+  body { font-size: 11pt; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; }
+}

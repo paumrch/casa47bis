@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Applications\ApplicationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -66,7 +67,17 @@ return new class extends Migration
             $table->index('submitted_at');
         });
 
-        DB::statement("ALTER TABLE applications ADD CONSTRAINT applications_status_check CHECK (status IN ('submitted', 'under_review', 'eligible', 'ineligible', 'scored', 'awarded', 'rejected', 'withdrawn', 'expired'))");
+        // La lista de estados válidos se DERIVA de la enumeración del dominio, no se
+        // copia. Copiarla fue el primer error de este fichero: la enumeración y la
+        // restricción se separaron y la aplicación intentó guardar un estado que la
+        // base rechazaba. Con una única fuente de verdad eso no puede volver a pasar,
+        // y una prueba (RestriccionDeEstadosTest) comprueba que siguen coincidiendo.
+        $statuses = implode(', ', array_map(
+            static fn (string $value): string => "'".$value."'",
+            ApplicationStatus::values(),
+        ));
+
+        DB::statement("ALTER TABLE applications ADD CONSTRAINT applications_status_check CHECK (status IN ({$statuses}))");
         DB::statement("COMMENT ON COLUMN applications.household_snapshot_members IS 'Instantánea inmutable de los miembros de la unidad al presentar la solicitud. No se actualiza aunque household_members cambie después. Puede contener ciphertext de datos de categoría especial (art. 9 RGPD).'");
         DB::statement("COMMENT ON TABLE applications IS 'Retención: conservación conforme al plazo de expedientes administrativos; no se elimina, se archiva o suprime según política de conservación (§12.3, decisión 14 — sin borrado lógico en el expediente).'");
     }

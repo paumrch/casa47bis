@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-
 return [
 
     /*
@@ -64,7 +62,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            // Identidad pendiente: los ciudadanos se autenticarán con Cl@ve (SAML 2.0)
+            // contra el modelo Account, y el personal gestor contra StaffUser. Son dos
+            // guards distintos a propósito: distinto ciclo de vida, distinta
+            // autenticación y distinto régimen de auditoría.
+            'model' => env('AUTH_MODEL'),
         ],
 
         // 'users' => [

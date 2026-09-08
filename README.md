@@ -57,6 +57,11 @@ salida de eventos y auditoría.
 | Puertos de integración | ✅ | Cl@ve, SCSP, DEHú y S3 son adaptadores sustituibles |
 | Esquema PostgreSQL (34 migraciones, 50 tablas) | ✅ | Verificado contra PostgreSQL 17 real |
 | Unicidad de adjudicación bajo concurrencia | ✅ | La garantía está en la base de datos, no en PHP |
+| Presentación de solicitud, transaccional | ✅ | Estado, auditoría y notificación: los tres o ninguno |
+| Auditoría inmutable encadenada por hash | ✅ | Borrar o alterar un evento se detecta |
+| Bandeja de salida transaccional | ✅ | Reintentos, bandeja de fallos y atasco observable |
+| Colas sobre PostgreSQL, sin Redis | ✅ | `SKIP LOCKED` probado con dos conexiones simultáneas |
+| Catálogo de viviendas y convocatorias | ✅ | Modelos, filtros, búsqueda tolerante a erratas |
 | Fronteras entre módulos | ✅ | Verificadas por CI, no declaradas |
 | Portal público | ⏳ | |
 | Asistente de solicitud | ⏳ | |
@@ -76,6 +81,10 @@ en seis meses.**
 | Los umbrales de renta son exactos al céntimo | Casos límite por encima y por debajo |
 | Una vivienda no se adjudica dos veces | Índice único parcial + prueba de violación |
 | El sistema es portable | Suite ejecutada contra dos almacenamientos distintos |
+| Nada queda a medias si falla un paso | Se rompe el último paso y se comprueba que no queda rastro |
+| Dos trabajadores no toman el mismo evento | Dos conexiones reales compitiendo por la misma bandeja |
+| La traza de auditoría detecta manipulación | Se altera un evento y la verificación lo señala |
+| El dominio y la base dicen lo mismo | La restricción `CHECK` se compara con la enumeración |
 
 ```bash
 composer check   # lint · análisis estático · fronteras · pruebas

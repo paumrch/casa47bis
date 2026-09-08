@@ -14,6 +14,7 @@
 deptrac:
   paths:
     - ./app
+    - ./database
 
   layers:
     # --- Dominio -------------------------------------------------------------
@@ -32,6 +33,21 @@ deptrac:
         - type: directory
           value: app/Domains/Shared/.*
 
+    - name: Audit
+      collectors:
+        - type: directory
+          value: app/Domains/Audit/.*
+
+    - name: Housing
+      collectors:
+        - type: directory
+          value: app/Domains/Housing/.*
+
+    - name: Calls
+      collectors:
+        - type: directory
+          value: app/Domains/Calls/.*
+
     # --- Frontera de integración ---------------------------------------------
     - name: IntegrationContracts
       collectors:
@@ -49,16 +65,45 @@ deptrac:
         - type: directory
           value: app/Http/.*
 
+    - name: Console
+      collectors:
+        - type: directory
+          value: app/Console/.*
+
     - name: Providers
       collectors:
         - type: directory
           value: app/Providers/.*
+
+    # --- Base de datos -------------------------------------------------------
+    - name: Factories
+      collectors:
+        - type: directory
+          value: database/factories/.*
+
+    - name: Seeders
+      collectors:
+        - type: directory
+          value: database/seeders/.*
+
+    - name: Migrations
+      collectors:
+        - type: directory
+          value: database/migrations/.*
 
     # --- Terceros ------------------------------------------------------------
     - name: Framework
       collectors:
         - type: classNameRegex
           value: '#^(Illuminate|Symfony|Carbon|Laravel)\\.*#'
+
+    # Interfaces PSR. Se separan del framework a propósito: depender de Psr\Log en el
+    # dominio es aceptable —es un estándar con muchas implementaciones—, mientras que
+    # depender de la fachada Log de Laravel no lo sería.
+    - name: Psr
+      collectors:
+        - type: classNameRegex
+          value: '#^Psr\\.*#'
 
     # Clases de la biblioteca estándar de PHP que el dominio sí puede usar.
     # Se enumeran a propósito: mantener la lista corta es una señal de salud.
@@ -81,13 +126,43 @@ deptrac:
       - Applications
       - Eligibility
       - SharedDomain
+      - Audit
       - IntegrationContracts
       - Framework
+      - Psr
+      - PhpCore
+
+    # La auditoría no conoce ningún dominio concreto: recibe cadenas y metadatos.
+    # Si algún día necesitara importar una solicitud, sería señal de que se está
+    # metiendo lógica de negocio en la traza.
+    Audit:
+      - Audit
+      - Framework
+      - Psr
+      - PhpCore
+
+    # El catálogo es independiente del procedimiento: se pueden publicar viviendas
+    # sin que exista ninguna solicitud. Housing NO conoce a Calls — la dirección es
+    # la contraria, y deptrac lo hace cumplir.
+    Housing:
+      - Housing
+      - Factories
+      - Framework
+      - Psr
+      - PhpCore
+
+    Calls:
+      - Calls
+      - Housing
+      - Factories
+      - Framework
+      - Psr
       - PhpCore
 
     SharedDomain:
       - SharedDomain
       - Framework
+      - Psr
       - PhpCore
 
     # Interfaces y objetos de valor. No dependen de nada de fuera.
@@ -102,6 +177,7 @@ deptrac:
       - IntegrationAdapters
       - IntegrationContracts
       - Framework
+      - Psr
       - PhpCore
 
     Http:
@@ -109,8 +185,25 @@ deptrac:
       - Applications
       - Eligibility
       - SharedDomain
+      - Audit
+      - Housing
+      - Calls
       - IntegrationContracts
       - Framework
+      - Psr
+      - PhpCore
+
+    Console:
+      - Console
+      - Applications
+      - Eligibility
+      - SharedDomain
+      - Audit
+      - Housing
+      - Calls
+      - IntegrationContracts
+      - Framework
+      - Psr
       - PhpCore
 
     Providers:
@@ -118,14 +211,51 @@ deptrac:
       - Applications
       - Eligibility
       - SharedDomain
+      - Audit
+      - Housing
+      - Calls
       - IntegrationContracts
       - IntegrationAdapters
       - Framework
+      - Psr
       - PhpCore
 
     Framework:
       - Framework
+      - Psr
       - PhpCore
 
     PhpCore:
+      - PhpCore
+
+    # Las factorías conocen sus modelos; nadie de producción conoce las factorías
+    # salvo el propio modelo para declarar la suya.
+    Factories:
+      - Factories
+      - Housing
+      - Calls
+      - Applications
+      - Framework
+      - Psr
+      - PhpCore
+
+    Seeders:
+      - Seeders
+      - Factories
+      - Housing
+      - Calls
+      - Framework
+      - Psr
+      - PhpCore
+
+    # Una migración puede leer una enumeración del dominio para derivar de ella una
+    # restricción, que es como se evita tener dos fuentes de verdad para la misma
+    # lista de estados.
+    Migrations:
+      - Migrations
+      - Applications
+      - Housing
+      - Calls
+      - Framework
+      - Psr
       - PhpCore

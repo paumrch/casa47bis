@@ -91,6 +91,47 @@ services:
       minio:
         condition: service_healthy
 
+
+  # Trabajador de la bandeja de salida transaccional.
+  #
+  # Es un proceso aparte del de colas a propósito: entrega eventos hacia servicios
+  # externos lentos (notificación fehaciente, sistema económico) y no debe competir por
+  # los mismos trabajadores que las tareas internas. Se pueden levantar varias réplicas
+  # sin coordinación: PostgreSQL las mantiene separadas con FOR UPDATE SKIP LOCKED.
+  outbox:
+    build:
+      context: .
+      target: app
+    entrypoint: []
+    command: ["php", "artisan", "outbox:work", "--batch=50", "--sleep=1"]
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: casa47bis
+      DB_USERNAME: casa47bis
+      DB_PASSWORD: dev
+      QUEUE_CONNECTION: database
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: dev
+      AWS_SECRET_ACCESS_KEY: devdevdev
+      AWS_DEFAULT_REGION: es-madrid-1
+      AWS_BUCKET: casa47bis
+      AWS_ENDPOINT: http://minio:9000
+      AWS_USE_PATH_STYLE_ENDPOINT: "true"
+    volumes:
+      - .:/app
+      - storage_data:/app/storage/app
+      - vendor_data:/app/vendor
+      - build_data:/app/public/build
+      - bootstrap_cache:/app/bootstrap/cache
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
   postgres:
     image: postgres:17-alpine
     environment:

@@ -6,6 +6,14 @@ portable y auditable.
 
 > **Estado:** Fase 1 — auditoría arquitectónica. Todavía no hay código de aplicación.
 
+## Entregables publicados
+
+| Documento | Contenido |
+|---|---|
+| [**CASA 47 — Minimal Architecture Review**](docs/CASA47-minimal-architecture-review.md) | Informe completo de Fase 1 |
+| [Plan del proyecto y mecanismos de control](PLAN.md) | Fases, puertas y frenos |
+| [`docs/research/`](docs/research/) | Los seis informes de investigación que sostienen el informe |
+
 ## Qué es esto
 
 Un ejercicio de ingeniería: reconstruir, a partir de información pública, qué
@@ -25,7 +33,7 @@ accesibilidad, interoperabilidad ni disponibilidad.
 
 ## Método
 
-1. **Fase 1 — Auditoría arquitectónica** (en curso): reverse specification del
+1. **Fase 1 — Auditoría arquitectónica** (completada, en revisión): reverse specification del
    portal, modelo conceptual, complejidad intrínseca vs accidental, arquitectura
    mínima candidata, TCO, coste de salida, adversarial review.
 2. Fase 2 — Diseño funcional y modelo de datos.

@@ -1,57 +1,116 @@
-# CASA 47 — Minimal Architecture Review
+# CASA 47 · Sistema de gestión del parque de alquiler asequible
 
-Análisis técnico independiente del portal público de CASA 47
-(`https://portal.casa47.es/`) y diseño de una arquitectura alternativa mínima,
-portable y auditable.
+Una demostración, en código que se ejecuta, de que un sistema administrativo público
+puede ser **simple, portable, auditable y barato de abandonar** sin renunciar a nada.
 
-> **Estado:** Fase 1 — auditoría arquitectónica. Todavía no hay código de aplicación.
+> **Estado:** en construcción, en abierto. Se publica lo que está terminado.
 
-## Entregables publicados
+---
 
-| Documento | Contenido |
+## De qué va esto
+
+El Estado adjudicó en noviembre de 2025 un contrato de **1.184.998 € sin IVA a cuatro
+años** para el sistema de gestión del parque público de alquiler asequible. Las licencias
+de la plataforma **no están incluidas** en esa cifra: el pliego las deja expresamente
+fuera. El portal ciudadano resultante entrega **1,33 MB de JavaScript** para pintar un
+listado de viviendas.
+
+Este repositorio no es una crítica. Es una **contrapropuesta ejecutable**.
+
+Dos preguntas, y las dos se responden con hechos verificables, no con opiniones:
+
+1. **¿Qué compró el Estado con ese dinero?** → [`docs/que-compro-el-estado.md`](docs/que-compro-el-estado.md)
+2. **¿Cómo debería ser el código?** → este repositorio.
+
+## La tesis, en una línea
+
+> La complejidad de este problema es casi toda **intrínseca** —normativa, interoperabilidad
+> con la Administración, seguridad, accesibilidad— y hay que pagarla igual. Lo que separa
+> a las dos arquitecturas es una licencia que crece con el número de ciudadanos atendidos
+> y un coste de salida de meses en lugar de días.
+
+El análisis completo, con sus fuentes y su revisión adversarial, está en
+[`docs/CASA47-minimal-architecture-review.md`](docs/CASA47-minimal-architecture-review.md).
+Incluye las conclusiones que **contradicen** nuestra hipótesis de partida, porque un
+informe que sólo confirma lo que ya pensaba su autor no vale nada.
+
+## La pila
+
+```text
+Laravel · PostgreSQL · HTML renderizado en servidor · almacenamiento S3 · contenedor OCI
+```
+
+Y nada más. Sin Redis, sin motor de búsqueda, sin bus de eventos, sin motor de procesos,
+sin microservicios. Cada ausencia está justificada en el informe, componente a componente,
+con la señal medible que nos obligaría a cambiar de opinión.
+
+PostgreSQL es el **único** almacén: datos, sesiones, colas, cerrojos, búsqueda, bandeja de
+salida de eventos y auditoría.
+
+## Qué hay construido
+
+| Pieza | Estado | Qué demuestra |
+|---|---|---|
+| Máquina de estados del procedimiento | ✅ | Un procedimiento administrativo no necesita un BPM |
+| Reglas de elegibilidad versionadas | ✅ | Una solicitud de 2026 se reevalúa en 2029 con las reglas de 2026 |
+| Aritmética de importes en céntimos | ✅ | Un redondeo mal hecho excluye a una familia |
+| Puertos de integración | ✅ | Cl@ve, SCSP, DEHú y S3 son adaptadores sustituibles |
+| Esquema PostgreSQL (34 migraciones, 50 tablas) | ✅ | Verificado contra PostgreSQL 17 real |
+| Unicidad de adjudicación bajo concurrencia | ✅ | La garantía está en la base de datos, no en PHP |
+| Fronteras entre módulos | ✅ | Verificadas por CI, no declaradas |
+| Portal público | ⏳ | |
+| Asistente de solicitud | ⏳ | |
+| Backoffice de gestión | ⏳ | |
+| Adaptadores reales (SCSP, Cl@ve, firma) | ⏳ | |
+
+## Lo que verificamos, en vez de afirmarlo
+
+Es la regla del proyecto: **una propiedad que no se comprueba automáticamente desaparece
+en seis meses.**
+
+| Afirmación | Cómo se comprueba |
 |---|---|
-| [**CASA 47 — Minimal Architecture Review**](docs/CASA47-minimal-architecture-review.md) | Informe completo de Fase 1 |
-| [Plan del proyecto y mecanismos de control](PLAN.md) | Fases, puertas y frenos |
-| [`docs/research/`](docs/research/) | Los seis informes de investigación que sostienen el informe |
+| El dominio no depende del framework | `deptrac` — la CI falla si alguien lo rompe |
+| No hay errores de tipo | PHPStan nivel 8 |
+| El procedimiento no tiene estados inalcanzables | Recorrido del grafo en una prueba |
+| Los umbrales de renta son exactos al céntimo | Casos límite por encima y por debajo |
+| Una vivienda no se adjudica dos veces | Índice único parcial + prueba de violación |
+| El sistema es portable | Suite ejecutada contra dos almacenamientos distintos |
 
-## Qué es esto
+```bash
+composer check   # lint · análisis estático · fronteras · pruebas
+```
 
-Un ejercicio de ingeniería: reconstruir, a partir de información pública, qué
-problema resuelve realmente el Sistema Integrado de Gestión del Parque de
-Alquiler Asequible, y evaluar si su portal ciudadano y su lógica transaccional
-pueden implementarse con una arquitectura sustancialmente más simple, con menor
-TCO y sin dependencia de plataforma propietaria — sin degradar seguridad,
-accesibilidad, interoperabilidad ni disponibilidad.
+## Cómo levantarlo
 
-## Qué NO es
+```bash
+make up        # aplicación, PostgreSQL y almacenamiento de objetos
+make migrate
+make test
+```
 
-- No es una acusación. No se hacen imputaciones sobre personas ni sobre la
-  legalidad del procedimiento de contratación.
-- No es una crítica ideológica a un fabricante.
-- No es un pentest. Todo el análisis se basa exclusivamente en información
-  pública y en el comportamiento observable de la aplicación.
+Detalle de operación, despliegue y copias en [`docs/operacion.md`](docs/operacion.md).
 
-## Método
+## Principio de diseño
 
-1. **Fase 1 — Auditoría arquitectónica** (completada, en revisión): reverse specification del
-   portal, modelo conceptual, complejidad intrínseca vs accidental, arquitectura
-   mínima candidata, TCO, coste de salida, adversarial review.
-2. Fase 2 — Diseño funcional y modelo de datos.
-3. Fase 3 — Diseño UX/UI.
-4. Fase 4 — Implementación del demostrador.
-5. Fase 5 — Benchmark y comparación económica.
+> Ningún componente entra en la arquitectura hasta que exista un problema concreto,
+> medible y documentado que resuelva mejor que las piezas que ya existen.
+> **La complejidad debe ganarse el derecho a existir.**
 
-Cada fase se publica aquí sólo cuando está terminada y es defendible.
+El plan por fases, con sus puertas y sus frenos, está en [`PLAN.md`](PLAN.md).
 
-## Reglas del proyecto
+## Qué NO es este proyecto
 
-- Ningún componente entra en la arquitectura hasta que exista un problema
-  concreto, medible y documentado que resuelva mejor que lo que ya hay.
-- Se distingue siempre **hecho observado** de **inferencia**.
-- Ninguna cifra sin fuente. Donde no hay precio público, se usan rangos e
-  hipótesis explícitas.
+- No es una acusación. No hay imputaciones sobre personas ni sobre la legalidad del
+  procedimiento de contratación. El pliego, de hecho, **admitía** una alternativa como
+  esta.
+- No es una crítica ideológica a un fabricante. El informe dedica un capítulo entero a lo
+  que Power Pages hace bien, porque hace cosas bien.
+- No es «esto lo monta un freelance en un fin de semana». La estimación honesta son
+  **30-34 persona-mes**, y está desglosada.
 
 ## Licencia
 
-Pendiente de definir para el código. La documentación se publica para revisión
-técnica abierta.
+Código bajo **EUPL-1.2**, la licencia pública de la Unión Europea, compatible con la
+reutilización de aplicaciones entre administraciones que prevé el artículo 157 de la
+Ley 40/2015.

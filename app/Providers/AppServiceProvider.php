@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Domains\Shared\Outbox\OutboxDispatcher;
+use App\Integrations\Contracts\DataVerificationGateway;
+use App\Integrations\Contracts\NotificationGateway;
 use Carbon\Carbon;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +23,18 @@ final class AppServiceProvider extends ServiceProvider
         // se instancien en una prueba con una conexión cualquiera, y lo que deja claro
         // en la firma de cada clase que necesita una transacción.
         $this->app->bind(ConnectionInterface::class, static fn (): ConnectionInterface => DB::connection());
+
+        // Los puertos del dominio se resuelven a adaptadores concretos según la
+        // configuración. El dominio nunca nombra a un proveedor: nombra a su puerto.
+        $this->app->bind(
+            DataVerificationGateway::class,
+            static fn ($app): DataVerificationGateway => $app->make((string) config('integrations.data_verification')),
+        );
+
+        $this->app->bind(
+            NotificationGateway::class,
+            static fn ($app): NotificationGateway => $app->make((string) config('integrations.notifications')),
+        );
 
         $this->app->singleton(OutboxDispatcher::class, static function ($app): OutboxDispatcher {
             $dispatcher = new OutboxDispatcher(

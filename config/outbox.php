@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use App\Integrations\Notifications\ApplicationStatusNotifier;
 
 return [
 
@@ -16,9 +17,10 @@ return [
     */
 
     'handlers' => [
-        // Pendiente: adaptadores reales de notificación (DEHú) y del sistema
-        // económico. Hasta entonces esta lista está vacía a propósito, y el
-        // despachador lo dice en voz alta si llega un evento sin destino.
+        ApplicationStatusNotifier::class,
+
+        // Pendiente: adaptador del sistema económico. El adaptador de notificación
+        // real (DEHú) sustituirá al doble cambiando una línea de config/integrations.php.
     ],
 
 ];

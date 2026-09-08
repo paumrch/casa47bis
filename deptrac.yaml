@@ -38,6 +38,11 @@ deptrac:
         - type: directory
           value: app/Domains/Audit/.*
 
+    - name: Notifications
+      collectors:
+        - type: directory
+          value: app/Domains/Notifications/.*
+
     - name: Housing
       collectors:
         - type: directory
@@ -132,6 +137,17 @@ deptrac:
       - Psr
       - PhpCore
 
+    # Decide qué actos se notifican de forma fehaciente: es conocimiento jurídico del
+    # procedimiento, no del proveedor. Consume la bandeja de salida y habla con el
+    # exterior sólo a través del puerto de notificación.
+    Notifications:
+      - Notifications
+      - SharedDomain
+      - IntegrationContracts
+      - Framework
+      - Psr
+      - PhpCore
+
     # La auditoría no conoce ningún dominio concreto: recibe cadenas y metadatos.
     # Si algún día necesitara importar una solicitud, sería señal de que se está
     # metiendo lógica de negocio en la traza.
@@ -212,6 +228,7 @@ deptrac:
       - Eligibility
       - SharedDomain
       - Audit
+      - Notifications
       - Housing
       - Calls
       - IntegrationContracts

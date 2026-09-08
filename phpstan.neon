@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+
+    paths:
+        - app
+        - database
+        - tests
+
+    # El dominio se escribe con tipos estrictos. Si en algún punto hace falta bajar
+    # el nivel, se hace aquí, con una línea que explique por qué — no con @phpstan-ignore
+    # esparcidos por el código.
+    treatPhpDocTypesAsCertain: false

@@ -1,0 +1,131 @@
+# Fronteras entre módulos, verificadas automáticamente.
+#
+# POR QUÉ ESTE FICHERO EXISTE
+#
+# Un "monolito modular" cuyas fronteras sólo viven en la buena voluntad del equipo deja
+# de ser modular en unos meses. Alguien tiene prisa, importa una clase interna de otro
+# módulo, nadie lo ve en la revisión, y repetido veinte veces queda una bola de barro
+# con carpetas bonitas.
+#
+# Aquí las fronteras rompen la integración continua. Es la diferencia entre una
+# propiedad declarada y una propiedad verificada — la misma distinción que este
+# proyecto aplica a la portabilidad del almacenamiento.
+
+deptrac:
+  paths:
+    - ./app
+
+  layers:
+    # --- Dominio -------------------------------------------------------------
+    - name: Eligibility
+      collectors:
+        - type: directory
+          value: app/Domains/Eligibility/.*
+
+    - name: Applications
+      collectors:
+        - type: directory
+          value: app/Domains/Applications/.*
+
+    - name: SharedDomain
+      collectors:
+        - type: directory
+          value: app/Domains/Shared/.*
+
+    # --- Frontera de integración ---------------------------------------------
+    - name: IntegrationContracts
+      collectors:
+        - type: directory
+          value: app/Integrations/Contracts/.*
+
+    - name: IntegrationAdapters
+      collectors:
+        - type: directory
+          value: app/Integrations/(?!Contracts/).*
+
+    # --- Entrega -------------------------------------------------------------
+    - name: Http
+      collectors:
+        - type: directory
+          value: app/Http/.*
+
+    - name: Providers
+      collectors:
+        - type: directory
+          value: app/Providers/.*
+
+    # --- Terceros ------------------------------------------------------------
+    - name: Framework
+      collectors:
+        - type: classNameRegex
+          value: '#^(Illuminate|Symfony|Carbon|Laravel)\\.*#'
+
+    # Clases de la biblioteca estándar de PHP que el dominio sí puede usar.
+    # Se enumeran a propósito: mantener la lista corta es una señal de salud.
+    - name: PhpCore
+      collectors:
+        - type: classNameRegex
+          value: '#^(DateTime\w*|DomainException|InvalidArgumentException|RuntimeException|LogicException|Exception|Throwable|Stringable|JsonSerializable|Countable|IteratorAggregate|ArrayAccess|Traversable)$#'
+
+  ruleset:
+    # Elegibilidad es PHP puro: no conoce Laravel, ni la base de datos, ni HTTP.
+    # Por eso sus pruebas corren en milisegundos y se puede razonar sobre ellas.
+    # Esta lista corta es la regla más importante del fichero.
+    Eligibility:
+      - Eligibility
+      - PhpCore
+
+    # Las solicitudes usan las reglas de elegibilidad y hablan con el exterior sólo a
+    # través de contratos, nunca de adaptadores concretos.
+    Applications:
+      - Applications
+      - Eligibility
+      - SharedDomain
+      - IntegrationContracts
+      - Framework
+      - PhpCore
+
+    SharedDomain:
+      - SharedDomain
+      - Framework
+      - PhpCore
+
+    # Interfaces y objetos de valor. No dependen de nada de fuera.
+    IntegrationContracts:
+      - IntegrationContracts
+      - PhpCore
+
+    # Un adaptador implementa su contrato y usa el framework. NO puede tocar el
+    # dominio: si un adaptador necesita una regla de negocio, la regla está en el
+    # sitio equivocado.
+    IntegrationAdapters:
+      - IntegrationAdapters
+      - IntegrationContracts
+      - Framework
+      - PhpCore
+
+    Http:
+      - Http
+      - Applications
+      - Eligibility
+      - SharedDomain
+      - IntegrationContracts
+      - Framework
+      - PhpCore
+
+    Providers:
+      - Providers
+      - Applications
+      - Eligibility
+      - SharedDomain
+      - IntegrationContracts
+      - IntegrationAdapters
+      - Framework
+      - PhpCore
+
+    Framework:
+      - Framework
+      - PhpCore
+
+    PhpCore:
+      - PhpCore

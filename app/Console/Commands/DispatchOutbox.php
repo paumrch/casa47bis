@@ -39,11 +39,11 @@ final class DispatchOutbox extends Command
             if ($this->option('once')) {
                 $backlog = $dispatcher->backlog();
                 $this->line(sprintf(
-                    'Pendientes: %d · En bandeja de fallos: %d · Más antiguo: %s',
+                    'Pendientes: %d, en bandeja de fallos: %d, mas antiguo: %s',
                     $backlog['pending'],
                     $backlog['dead_lettered'],
                     $backlog['oldest_pending_seconds'] === null
-                        ? '—'
+                        ? '-'
                         : $backlog['oldest_pending_seconds'].' s',
                 ));
 

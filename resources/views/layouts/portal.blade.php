@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('titulo') · Vivienda de alquiler asequible</title>
+    <title>@yield('titulo') - Vivienda de alquiler asequible</title>
     <meta name="description" content="@yield('descripcion', 'Consulta las viviendas de alquiler asequible disponibles, las convocatorias abiertas y los requisitos de acceso.')">
 
     {{--

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Schema;
  * vivos de `households`/`household_members` para lo que determina el
  * derecho. Los copia en el momento de presentar, como columnas
  * (`household_snapshot_*`) más un `jsonb` (`household_snapshot_members`)
- * con el detalle de cada miembro tal como constaba entonces —incluidos, si
+ * con el detalle de cada miembro tal como constaba entonces -incluidos, si
  * el baremo los pondera, los indicadores de categoría especial ya cifrados
  * en origen. Motivo: la unidad de convivencia cambia en el tiempo; sin la
  * instantánea, resolver un recurso administrativo años después es
@@ -79,7 +79,7 @@ return new class extends Migration
 
         DB::statement("ALTER TABLE applications ADD CONSTRAINT applications_status_check CHECK (status IN ({$statuses}))");
         DB::statement("COMMENT ON COLUMN applications.household_snapshot_members IS 'Instantánea inmutable de los miembros de la unidad al presentar la solicitud. No se actualiza aunque household_members cambie después. Puede contener ciphertext de datos de categoría especial (art. 9 RGPD).'");
-        DB::statement("COMMENT ON TABLE applications IS 'Retención: conservación conforme al plazo de expedientes administrativos; no se elimina, se archiva o suprime según política de conservación (§12.3, decisión 14 — sin borrado lógico en el expediente).'");
+        DB::statement("COMMENT ON TABLE applications IS 'Retención: conservación conforme al plazo de expedientes administrativos; no se elimina, se archiva o suprime según política de conservación (§12.3, decisión 14, sin borrado lógico en el expediente).'");
     }
 
     public function down(): void

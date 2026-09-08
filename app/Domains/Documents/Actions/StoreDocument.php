@@ -22,8 +22,8 @@ use RuntimeException;
  *
  * Imita el patrón transaccional de `SubmitApplication`, con una diferencia deliberada:
  * aquí la transacción de base de datos NO envuelve la escritura en el almacén de
- * objetos. Un almacén de objetos no participa en la transacción de PostgreSQL —no hay
- * forma de hacer un `COMMIT` conjunto entre los dos sistemas—, así que hay que decidir
+ * objetos. Un almacén de objetos no participa en la transacción de PostgreSQL -no hay
+ * forma de hacer un `COMMIT` conjunto entre los dos sistemas-, así que hay que decidir
  * conscientemente el orden y aceptar la clase de huérfano que puede quedar.
  *
  * EL ORDEN, Y POR QUÉ
@@ -42,7 +42,7 @@ use RuntimeException;
  *
  * Si el paso 3 (almacén) falla, la excepción se propaga antes de que exista ninguna
  * transacción de base de datos: no se llega a escribir la fila. No queda un expediente
- * que apunte a un documento inexistente, que es el huérfano inaceptable —alguien abriría
+ * que apunte a un documento inexistente, que es el huérfano inaceptable -alguien abriría
  * el expediente, vería el documento listado y no podría descargarlo nunca.
  *
  * Si el paso 4 (base de datos) falla DESPUÉS de que el paso 3 haya tenido éxito, el
@@ -149,8 +149,8 @@ final readonly class StoreDocument
             $sizeBytes,
             $actor,
         ): Document {
-            // Repetir la comprobación de duplicado dentro de la transacción reduce —sin
-            // eliminarla— la ventana de una carrera entre dos subidas concurrentes del
+            // Repetir la comprobación de duplicado dentro de la transacción reduce -sin
+            // eliminarla- la ventana de una carrera entre dos subidas concurrentes del
             // mismo contenido: no hay restricción única en la base que la cierre del
             // todo, y añadirla queda fuera del alcance de este módulo.
             $duplicate = $this->findDuplicate($documentableType, $documentableId, $checksum);

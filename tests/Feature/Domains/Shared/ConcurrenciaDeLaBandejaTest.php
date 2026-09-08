@@ -17,8 +17,8 @@ use Tests\TestCase;
  *
  * Todo el argumento de que este sistema no necesita Redis ni un broker se apoya en una
  * sola primitiva de PostgreSQL: `SELECT … FOR UPDATE SKIP LOCKED`. Si esa primitiva no
- * hiciera lo que se afirma, la arquitectura propuesta tendría un fallo grave —dos
- * trabajadores notificando dos veces al mismo ciudadano— y habría que reintroducir el
+ * hiciera lo que se afirma, la arquitectura propuesta tendría un fallo grave -dos
+ * trabajadores notificando dos veces al mismo ciudadano- y habría que reintroducir el
  * componente que se ha decidido no tener.
  *
  * Así que no se afirma: se comprueba, con dos conexiones reales y simultáneas.

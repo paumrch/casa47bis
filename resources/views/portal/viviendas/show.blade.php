@@ -1,6 +1,6 @@
 @extends('layouts.portal')
 
-@section('titulo', $property->development->name . ' · ' . $property->municipality)
+@section('titulo', $property->development->name.', '.$property->municipality)
 @section('descripcion', "Vivienda de {$property->bedrooms} dormitorios en {$property->municipality}, {$property->province}.")
 
 @section('contenido')

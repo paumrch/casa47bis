@@ -29,8 +29,8 @@ use Illuminate\Support\Str;
  *
  * Un bus resuelve un problema distinto: distribuir gran volumen a muchos consumidores
  * desacoplados. Aquí hay pocos consumidores, conocidos, y miles de eventos, no millones
- * por segundo. Lo que hace falta —atomicidad entre el cambio y la intención de
- * notificar— lo da la transacción, no el bus. Añadir un bus no resolvería este problema:
+ * por segundo. Lo que hace falta -atomicidad entre el cambio y la intención de
+ * notificar- lo da la transacción, no el bus. Añadir un bus no resolvería este problema:
  * lo tendría igual, más un componente que operar.
  */
 final readonly class OutboxRecorder

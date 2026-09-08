@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Sesiones HTTP. Reemplaza la migración por defecto de Laravel: en lugar de
  * un único `user_id`, usa un morph (`authenticatable_type`/`authenticatable_id`)
- * porque hay dos guards independientes —`accounts` (ciudadanía) y
- * `staff_users` (personal gestor)— con ciclo de vida y autenticación
+ * porque hay dos guards independientes -`accounts` (ciudadanía) y
+ * `staff_users` (personal gestor)- con ciclo de vida y autenticación
  * distintos (§5.3).
  */
 return new class extends Migration

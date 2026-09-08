@@ -152,8 +152,8 @@ final class PresupuestoDeBytesTest extends TestCase
     /**
      * La comparación que se publicará, medida y sin inflar.
      *
-     * Se compara el catálogo COMPLETO de la propuesta —HTML con doce viviendas más la
-     * hoja de estilos entera— contra el bundle de JavaScript del portal analizado, sin
+     * Se compara el catálogo COMPLETO de la propuesta -HTML con doce viviendas más la
+     * hoja de estilos entera- contra el bundle de JavaScript del portal analizado, sin
      * contar el HTML ni el CSS de aquél. Es decir, la comparación juega en contra
      * nuestra a propósito: si aun así el resultado es holgado, es defendible.
      *

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->timestamps();
 
             // Clave primaria compuesta por la clave natural. Esta tabla tenía además una
-            // columna `id` UUID, y se ha eliminado: no aportaba nada —la relación no
-            // tiene atributos propios y (call_id, property_id) ya era única— y obligaba
+            // columna `id` UUID, y se ha eliminado: no aportaba nada -la relación no
+            // tiene atributos propios y (call_id, property_id) ya era única- y obligaba
             // a generar un identificador en cada `attach()`, que es justo lo que rompió
             // el sembrado. Una columna menos que mantener y un fallo menos que tener.
             $table->primary(['call_id', 'property_id']);

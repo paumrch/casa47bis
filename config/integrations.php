@@ -14,7 +14,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Cada puerto del dominio se resuelve aquí a un adaptador concreto. Cambiar de
-    | proveedor —o desplegar sin uno— es cambiar una línea de este fichero.
+    | proveedor (o desplegar sin uno) es cambiar una línea de este fichero.
     |
     | El valor POR DEFECTO de la verificación de datos es el adaptador que declara
     | la comprobación automática como no disponible. Es deliberado: mientras no

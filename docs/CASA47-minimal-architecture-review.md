@@ -1,7 +1,7 @@
-# CASA 47 — Minimal Architecture Review
+# CASA 47, Minimal Architecture Review
 
-**Fase 1 — Auditoría arquitectónica.**
-Documento de trabajo para revisión técnica. Versión 1.0 — 8 de septiembre de 2026.
+**Fase 1, Auditoría arquitectónica.**
+Documento de trabajo para revisión técnica. Versión 1.0, 8 de septiembre de 2026.
 
 ---
 
@@ -40,8 +40,8 @@ Cuando una cifra intermedia resultó estar mal, se corrigió y se dejó constanc
 
 ## 1. Resumen ejecutivo
 
-**Qué se analizó.** El portal ciudadano de CASA 47 —Entidad Estatal de Vivienda, SEPES EPE
-transformada, adscrita al Ministerio de Vivienda y Agenda Urbana— y el contrato del
+**Qué se analizó.** El portal ciudadano de CASA 47 -Entidad Estatal de Vivienda, SEPES EPE
+transformada, adscrita al Ministerio de Vivienda y Agenda Urbana- y el contrato del
 Sistema Integrado de Gestión del Parque de Alquiler Asequible, expediente 132019,
 adjudicado a EY Transforma Servicios de Consultoría S.L. el 26 de noviembre de 2025 por
 **1.184.998 € sin IVA** a cuatro años, sobre un valor estimado de 1.880.949 €.
@@ -74,8 +74,8 @@ por mucho menos" no se sostiene en la partida de trabajo.**
 
 **Hallazgo técnico que reorienta el análisis.** El portal ciudadano **no está construido
 con las capacidades declarativas de la plataforma**: es una aplicación JavaScript a medida
-de **1.333.490 bytes** servida dentro de la plantilla por defecto de Power Pages —cuyo
-comentario `<!-- Default studio template. Please do not modify -->` sigue en el HTML—, que
+de **1.333.490 bytes** servida dentro de la plantilla por defecto de Power Pages -cuyo
+comentario `<!-- Default studio template. Please do not modify -->` sigue en el HTML-, que
 actúa como alojamiento, autenticación y proxy de datos hacia Dataverse. La justificación
 habitual de una plataforma de desarrollo rápido, "no hay que programar", **no se
 corresponde con lo observable**.
@@ -95,14 +95,14 @@ plataforma, los rangos de coste de ambas opciones **se solapan**: no puede afirm
 ahorro.
 
 **Qué sí cambia.** El coste de licencia por ciudadano pasa de escalar con el uso a ser
-cero; el coste de salida pasa de meses a días; la dependencia económica —la única que no
-se resuelve con trabajo— desaparece. Con uso medio a diez años, la diferencia estimada va
+cero; el coste de salida pasa de meses a días; la dependencia económica -la única que no
+se resuelve con trabajo- desaparece. Con uso medio a diez años, la diferencia estimada va
 de 1,2 a 2,7 millones de euros.
 
 **Restricción que se creía decisiva y no lo es.** La conectividad con Red SARA, exigida
 por la Plataforma de Intermediación de Datos y por SIR, es **simétrica**: Power Pages se
 ejecuta en Azure, también fuera de SARA, y necesita la misma pasarela. Existe la vía
-institucional —NubeSARA, con convenios publicados en el BOE— y aplica igual a ambas.
+institucional (NubeSARA, con convenios publicados en el BOE) y aplica igual a ambas.
 
 **Riesgo que sí es decisivo y obliga a corregir la propuesta.** El pliego exige
 certificación **ENS de nivel alto, ISO 27001, 27017 y 27018 al licitador**, no sólo al
@@ -132,8 +132,8 @@ incorrecto, toda la comparación es inútil.
 
 ### 2.1 El problema, sin tecnología
 
-Un organismo público —la Entidad Estatal de Vivienda, marca operativa CASA 47, que es
-SEPES EPE transformada y adscrita al Ministerio de Vivienda y Agenda Urbana— debe:
+Un organismo público -la Entidad Estatal de Vivienda, marca operativa CASA 47, que es
+SEPES EPE transformada y adscrita al Ministerio de Vivienda y Agenda Urbana- debe:
 
 1. **Publicar** una oferta de vivienda de alquiler asequible, comprensible y accesible.
 2. **Recibir** solicitudes de hasta 50.000 ciudadanos, verificando su identidad con
@@ -169,8 +169,8 @@ Lo difícil es la **conjunción** de tres cosas que rara vez aparecen juntas:
 - **No es un problema de análisis de datos.** Hay informes, y son sencillos.
 
 Estas cuatro negaciones importan porque las cuatro tecnologías que suelen introducirse en
-proyectos así —CRM, arquitectura distribuida, mensajería en tiempo real, plataforma
-analítica— responden a problemas que aquí no existen.
+proyectos así -CRM, arquitectura distribuida, mensajería en tiempo real, plataforma
+analítica- responden a problemas que aquí no existen.
 
 ### 2.4 Enunciado final
 
@@ -231,8 +231,8 @@ justo.
 > plataforma**. Es una aplicación JavaScript a medida servida dentro de la plantilla por
 > defecto de Power Pages, que actúa como alojamiento, autenticación y proxy de datos.
 
-Consecuencia: la justificación habitual de una plataforma de desarrollo rápido —"no hay
-que programar"— **no se corresponde con lo observable en la parte pública**. Se está
+Consecuencia: la justificación habitual de una plataforma de desarrollo rápido -"no hay
+que programar"- **no se corresponde con lo observable en la parte pública**. Se está
 asumiendo el coste del desarrollo a medida y, simultáneamente, el modelo de licenciamiento
 de la plataforma.
 
@@ -261,7 +261,7 @@ Reconstruido leyendo el propio bundle público, no adivinando rutas. Detalle com
 │   ├── mapa                         200   Vista de mapa (chunk aparte)
 │   └── :id                          200   Ficha de vivienda
 ├── solicitar-vivienda               200   Punto de entrada al trámite
-├── solicitud/…                      200   Asistente de solicitud — REQUIERE SESIÓN
+├── solicitud/…                      200   Asistente de solicitud, REQUIERE SESIÓN
 └── legal
     ├── aviso-legal                  200
     ├── privacidad                   200
@@ -304,8 +304,8 @@ Declara conformidad **parcial** con el RD 1112/2018, con fecha de 20 de julio de
 Dos observaciones técnicas:
 
 1. **No cita el nivel WCAG alcanzado.** El pliego exige WCAG 2.1 (PPT 4.6.8).
-2. Las no conformidades están redactadas en condicional genérico —"podría no ser
-   accesible"— y no se identifica una auditoría concreta con su alcance y fecha.
+2. Las no conformidades están redactadas en condicional genérico -"podría no ser
+   accesible"- y no se identifica una auditoría concreta con su alcance y fecha.
 
 Se señala como observación de cumplimiento, no como imputación. Una declaración de
 accesibilidad debe permitir a un ciudadano saber qué no funciona y a quién reclamar.
@@ -375,7 +375,7 @@ ejemplo pequeño pero real de la regla de §1.
 | `Application` | Solicitud. La entidad central del sistema. Estado, convocatoria, unidad congelada, puntuación, preferencias. |
 | `ApplicationPreference` | Viviendas o promociones solicitadas, en orden de preferencia. |
 | `Document` | Documento aportado o generado. Metadatos, hash, referencia en almacenamiento, estado de validación y de firma. |
-| `Verification` | Resultado de una comprobación concreta (ingresos, titularidad, estar al corriente de pago). Guarda el origen —consulta automática o documento aportado—, la fecha y la evidencia. |
+| `Verification` | Resultado de una comprobación concreta (ingresos, titularidad, estar al corriente de pago). Guarda el origen -consulta automática o documento aportado-, la fecha y la evidencia. |
 | `Score` | Baremación: puntuación total y su desglose por criterio, con la versión del baremo aplicada. |
 | `Award` | Adjudicación de una vivienda a una solicitud. Aceptación, renuncia, plazo. |
 | `Lease` | Contrato de arrendamiento. Vigencia, renta, fianza, firmantes. |
@@ -388,7 +388,7 @@ ejemplo pequeño pero real de la regla de §1.
 |---|---|
 | `AuditEvent` | Registro inmutable de quién hizo qué, cuándo, sobre qué y desde dónde. Sólo inserción. |
 | `OutboxEvent` | Evento pendiente de entregar a un sistema externo (§10.6). |
-| `NotificationRecord` | Comunicación emitida y su acuse. Distingue **notificación fehaciente** —con efectos jurídicos y plazos— de **aviso informativo**. Confundirlas es un defecto grave en un procedimiento administrativo. |
+| `NotificationRecord` | Comunicación emitida y su acuse. Distingue **notificación fehaciente** (con efectos jurídicos y plazos) de **aviso informativo**. Confundirlas es un defecto grave en un procedimiento administrativo. |
 | `ExternalCallLog` | Traza de cada llamada a un servicio externo, con petición, respuesta y correlación. Necesario para poder demostrar qué respondió la Administración un día concreto. |
 
 ### 5.3 Entidades que se descartan, y por qué
@@ -413,11 +413,11 @@ del esquema, no después.
 |---|---|---|
 | Identificativos | Nombre, NIF/NIE, domicilio, contacto | Acceso por rol; auditoría de toda lectura |
 | Económicos | Renta, situación tributaria, estar al corriente | Acceso restringido; nunca en registros de log |
-| **Categoría especial (art. 9 RGPD)** | Discapacidad —dato de salud—; condición de víctima de violencia de género si el baremo la contempla | Cifrado a nivel de campo; acceso a un rol específico; auditoría reforzada; **motivo obligatorio para acceder** |
+| **Categoría especial (art. 9 RGPD)** | Discapacidad -dato de salud-; condición de víctima de violencia de género si el baremo la contempla | Cifrado a nivel de campo; acceso a un rol específico; auditoría reforzada; **motivo obligatorio para acceder** |
 | Documentales | Documentación acreditativa | Almacenamiento cifrado, acceso sólo por URL firmada de corta vigencia |
 
 **Este punto no es un trámite.** Si el baremo pondera discapacidad o violencia de género
-—como es habitual en vivienda protegida—, el sistema trata datos de categoría especial y
+como es habitual en vivienda protegida-, el sistema trata datos de categoría especial y
 la evaluación de impacto en protección de datos es obligatoria. Cualquier arquitectura
 que se proponga debe demostrar dónde vive ese dato, quién puede leerlo y cómo se prueba
 quién lo leyó. Se recoge como requisito de primer nivel en §14.
@@ -506,7 +506,7 @@ plantilla por defecto de la plataforma. El comentario literal
 Esto tiene una consecuencia analítica precisa:
 
 > Si el portal se ha programado a medida de todas formas, entonces **la justificación
-> habitual de una plataforma low-code —"no hay que programar"— no aplica a este caso**.
+> habitual de una plataforma low-code ("no hay que programar") no aplica a este caso**.
 > Se está pagando el modelo de licenciamiento de una plataforma de desarrollo rápido
 > mientras se asume el coste de desarrollo a medida.
 
@@ -591,7 +591,7 @@ La pregunta correcta no es si la plataforma es buena. Es **si este problema la n
 | Modelo de datos genérico de CRM | **Contraproducente** | Un expediente administrativo no es una oportunidad de venta; forzar el encaje añade trabajo |
 | Construcción de páginas sin código | **No se está usando** | El portal es una aplicación a medida (§3, §6.3) |
 | Escalado elástico masivo | No | El pico es de miles de usuarios, no de millones |
-| Ecosistema de conectores | Parcial | Los conectores relevantes aquí —SCSP, Cl@ve, DEHú— **no** existen de fábrica; hay que construirlos igual |
+| Ecosistema de conectores | Parcial | Los conectores relevantes aquí (SCSP, Cl@ve, DEHú) **no** existen de fábrica; hay que construirlos igual |
 
 La última fila es importante y suele pasarse por alto: **las integraciones que definen la
 dificultad de este proyecto no vienen resueltas por el catálogo de conectores de la
@@ -621,7 +621,7 @@ la otra parte.
 
 **Un dato que ilustra el riesgo, y que no es una opinión sobre el fabricante:** el
 producto ha cambiado de nombre y de modelo de licenciamiento tres veces en siete años
-—Dynamics 365 Portals, Power Apps Portals, Power Pages— con un cambio de modelo de precio
+Dynamics 365 Portals, Power Apps Portals, Power Pages- con un cambio de modelo de precio
 en 2022 que pasó de inicios de sesión a capacidad por usuarios únicos mensuales. Un
 sistema con horizonte de diez años debe contar con que ese modelo volverá a cambiar. No
 es una crítica: es planificación.
@@ -647,7 +647,7 @@ quitar algo más?**
 | Los trabajadores de cola como proceso separado | Sí, ejecutándolos en las mismas instancias | **Aceptado como opción**: en volúmenes bajos pueden convivir. Se separan por aislamiento de fallos, no por capacidad. Es una decisión revisable. |
 
 **Resultado: la arquitectura propuesta ya está en su mínimo defendible.** Sólo hay una
-pieza que podría eliminarse sin daño funcional —los trabajadores separados— y su
+pieza que podría eliminarse sin daño funcional (los trabajadores separados) y su
 separación se justifica por aislamiento, no por rendimiento.
 
 Este ejercicio importa: demuestra que la propuesta ha sido sometida a la misma regla que
@@ -672,7 +672,7 @@ se aplica a la arquitectura ajena.
             ┌───────────────┐           ┌───────────────┐
             │  App 01       │           │  App 02       │
             │  (Laravel)    │           │  (Laravel)    │
-            │  Web·API·     │           │               │
+            │  Web/API/     │           │               │
             │  Backoffice   │           │               │
             └───────┬───────┘           └───────┬───────┘
                     └─────────────┬─────────────┘
@@ -701,7 +701,7 @@ se aplica a la arquitectura ajena.
                         │  (NubeSARA / PdP)      │
                         └───────────┬────────────┘
                                     ▼
-                              PID · SCSP · SIR
+                              PID / SCSP / SIR
 ```
 
 **La caja de la pasarela SARA es la única concesión estructural** que impone el
@@ -720,7 +720,7 @@ ecosistema, y como se demostró en §13, **la impone igual a la arquitectura act
     SIR, FACe)      └───────────┬──────────────────┘
                                 │
                                 ▼
-                    Sistema económico · Catastro · Registro
+                    Sistema económico / Catastro / Registro
 ```
 
 ### 9.4 Componentes internos del monolito
@@ -740,9 +740,9 @@ ecosistema, y como se demostró en §13, **la impone igual a la arquitectura act
 │  └────────────┘ └────────────┘ └────────────┘ └───────────┘  │
 │                                                              │
 │  ─────────────────── Capa de integración ─────────────────── │
-│  IdentityGateway · DataVerificationGateway · SignatureGateway│
-│  NotificationGateway · RegistryGateway · FinancialGateway    │
-│  PropertyRegistryGateway · DocumentStorageGateway            │
+│  IdentityGateway  DataVerificationGateway  SignatureGateway│
+│  NotificationGateway  RegistryGateway  FinancialGateway    │
+│  PropertyRegistryGateway  DocumentStorageGateway            │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -764,7 +764,7 @@ app/
     Notifications/   Comunicaciones y acuses
     Audit/           Eventos inmutables y consulta
   Integrations/
-    Contracts/       Interfaces de puerto — sin dependencias externas
+    Contracts/       Interfaces de puerto, sin dependencias externas
     Clave/           Adaptador SAML 2.0
     Scsp/            Adaptador SOAP con XML firmado
     Signature/       Adaptador de firma y validación
@@ -788,18 +788,18 @@ modular" es que degenere en catorce capas para guardar una vivienda. Reglas expl
    Nunca alcanzando directamente el modelo interno ajeno.
 4. **La frontera se verifica automáticamente.** Una prueba de arquitectura falla la
    integración continua si un módulo importa una clase interna de otro. Sin esa prueba,
-   la modularidad es una intención, no un hecho — y en cinco años no quedará nada de ella.
+   la modularidad es una intención, no un hecho, y en cinco años no quedará nada de ella.
 5. **Ningún módulo antes de que exista su segundo caso de uso.** La estructura de arriba
    es el destino, no el andamio del primer día.
 ## 10. Justificación componente por componente
 
 Regla aplicada en todo el capítulo: **ningún componente entra hasta que exista un
 problema concreto, medible y documentado que resuelva mejor que las piezas ya
-presentes.** Cada ficha responde: problema · opciones · decisión · coste · dependencia
-que genera · alternativa si la decisión resulta equivocada · señal objetiva que nos
+presentes.** Cada ficha responde: problema, opciones, decisión, coste, dependencia
+que genera, alternativa si la decisión resulta equivocada, y la señal objetiva que nos
 obligaría a cambiar de opinión.
 
-Esa última línea —*trigger de revisión*— es la que convierte esto en ingeniería y no en
+Esa última línea (*trigger de revisión*) es la que convierte esto en ingeniería y no en
 preferencia. Una arquitectura que no declara qué evidencia la refutaría no es defendible.
 
 ---
@@ -825,8 +825,8 @@ distribuida, observabilidad distribuida y coste operativo permanente. Aquí:
 
 - El sistema tiene **un solo dueño funcional** y un equipo del orden de 3-6 personas.
   La independencia de despliegue entre equipos no tiene a quién beneficiar.
-- El proceso central —una solicitud que cambia de estado, con documentos, verificaciones
-  y auditoría— es **fuertemente transaccional**. Es exactamente el caso en el que una
+- El proceso central -una solicitud que cambia de estado, con documentos, verificaciones
+  y auditoría- es **fuertemente transaccional**. Es exactamente el caso en el que una
   transacción ACID local vale más que cualquier saga distribuida.
 - El perfil de carga es **estacional y previsible** (aperturas y cierres de convocatoria),
   no un mosaico de subsistemas con perfiles divergentes que justifique escalar por partes.
@@ -842,7 +842,7 @@ somete a red team en §22.
 
 **Alternativa si falla.** Un monolito modular con fronteras respetadas es precisamente
 el punto de partida más barato para extraer un servicio el día que un módulo lo
-justifique. Lo contrario —recomponer microservicios en un monolito— es mucho más caro.
+justifique. Lo contrario (recomponer microservicios en un monolito) es mucho más caro.
 
 **Trigger de revisión.** Que un módulo concreto necesite un perfil de escalado o una
 ventana de despliegue incompatible con el resto, medido, no supuesto.
@@ -852,7 +852,7 @@ ventana de despliegue incompatible con el resto, medido, no supuesto.
 ### 10.2 Interfaz: HTML renderizado en servidor
 
 **Problema.** Entregar la interfaz pública y la transaccional cumpliendo WCAG 2.1 AA
-y EN 301 549, con buen rendimiento en red móvil y en equipos modestos —el perfil real
+y EN 301 549, con buen rendimiento en red móvil y en equipos modestos -el perfil real
 de quien solicita vivienda asequible.
 
 **Opciones.** (a) HTML renderizado en servidor con JavaScript puntual. (b) SPA que
@@ -883,8 +883,8 @@ y formularios largos con guardado de borrador.
 **Coste.** Menos interactividad "de aplicación". Hay que ser disciplinado para que las
 islas no crezcan hasta convertirse en una SPA de facto.
 
-**Trigger de revisión.** Que un flujo concreto —previsiblemente el formulario de
-solicitud— resulte medible y repetidamente peor con recargas: entonces se convierte
+**Trigger de revisión.** Que un flujo concreto -previsiblemente el formulario de
+solicitud- resulte medible y repetidamente peor con recargas: entonces se convierte
 *ese* flujo, no la aplicación.
 
 ---
@@ -913,7 +913,7 @@ gratis y no debe presentarse como si lo fuera.
 
 ### 10.4 Documentos: almacenamiento de objetos compatible con S3
 
-**Problema.** Custodiar documentación acreditativa —identidad, ingresos, contratos— con
+**Problema.** Custodiar documentación acreditativa (identidad, ingresos, contratos) con
 integridad verificable, control de acceso, coste razonable y portabilidad.
 
 **Decisión: almacenamiento de objetos con API compatible con S3.** En la base de datos
@@ -932,7 +932,7 @@ adaptador de disco de la aplicación.
 diferencias reales aparecen en URLs firmadas, políticas de ciclo de vida, cifrado con
 clave gestionada por el cliente y bloqueo de objetos. La aplicación debe usar el
 subconjunto común y probarse contra al menos dos implementaciones en integración
-continua —MinIO en local, el proveedor real en preproducción— para que la portabilidad
+continua (MinIO en local, el proveedor real en preproducción) para que la portabilidad
 sea un hecho verificado y no una promesa del diagrama.
 
 ---
@@ -949,8 +949,8 @@ dedicado.
 
 La razón principal no es ahorrar un servidor: es que **encolar un trabajo dentro de la
 misma transacción que modifica el estado del expediente elimina toda una familia de
-errores** —el trabajo encolado para un cambio que luego revirtió, o el cambio confirmado
-cuyo trabajo se perdió—. Con un broker externo eso exige patrones adicionales. Con
+errores** -el trabajo encolado para un cambio que luego revirtió, o el cambio confirmado
+cuyo trabajo se perdió-. Con un broker externo eso exige patrones adicionales. Con
 PostgreSQL es una consecuencia de la transacción.
 
 **Coste.** Las colas en base de datos generan escrituras y trabajo de limpieza
@@ -978,8 +978,8 @@ exponencial, clave de idempotencia y bandeja de fallos permanentes.
 **Por qué no un bus de eventos dedicado.** Un bus resuelve un problema distinto:
 distribución de alto volumen a muchos consumidores desacoplados. Aquí hay pocos
 consumidores, conocidos, y el volumen es de miles de eventos, no de millones por
-segundo. Lo que sí hace falta —atomicidad entre el cambio de estado y la intención de
-notificar— lo da la transacción, no el bus.
+segundo. Lo que sí hace falta -atomicidad entre el cambio de estado y la intención de
+notificar- lo da la transacción, no el bus.
 
 **Coste.** Hay que implementar bien reintentos, idempotencia y bandeja de fallos, y
 hay que **vigilarla**: una bandeja de salida sin alerta de atasco es una avería
@@ -1001,7 +1001,7 @@ dentro de una transacción.
 
 **Por qué no un motor de procesos.** Un BPM aporta valor cuando el flujo lo modifican
 personas de negocio sin desarrollo y cambia con frecuencia. Un procedimiento
-administrativo cambia cuando cambia la norma —no semanalmente— y su modificación exige
+administrativo cambia cuando cambia la norma (no semanalmente) y su modificación exige
 igualmente análisis, pruebas y despliegue controlado, porque afecta a derechos. El motor
 añadiría un segundo lugar donde vive la lógica y un segundo estado que mantener
 coherente con el de la base.
@@ -1019,7 +1019,7 @@ modifiquen el flujo en producción sin ciclo de despliegue.
 **Decisión: los gestores trabajan sobre la misma aplicación, el mismo modelo y la misma
 base**, bajo autorización por rol y con auditoría reforzada.
 
-**Por qué.** La alternativa —un CRM separado— obliga a sincronizar dos modelos del mismo
+**Por qué.** La alternativa (un CRM separado) obliga a sincronizar dos modelos del mismo
 expediente. Esa sincronización es, en sistemas de este tipo, la principal fuente de
 divergencias y de trabajo de conciliación. Suprimirla no es un ahorro de licencias:
 es la eliminación de una clase entera de defectos.
@@ -1031,15 +1031,15 @@ como tales, hay que decirlo y valorarlo. Lo que se sostiene aquí es que **gesti
 expedientes reglados no es gestionar relaciones con clientes**, y que usar un CRM para
 lo primero es pagar por un modelo que no encaja.
 
-**Trigger de revisión.** Que aparezca una necesidad genuina de CRM —captación, campañas,
-centro de llamadas— con volumen que lo justifique.
+**Trigger de revisión.** Que aparezca una necesidad genuina de CRM -captación, campañas,
+centro de llamadas- con volumen que lo justifique.
 
 ---
 
 ### 10.9 Integraciones: puertos y adaptadores
 
-**Decisión.** El dominio depende de interfaces propias —identidad, notificación,
-documento, económico, firma, registro, consulta de datos— y nunca de un proveedor
+**Decisión.** El dominio depende de interfaces propias -identidad, notificación,
+documento, económico, firma, registro, consulta de datos- y nunca de un proveedor
 concreto. Cada proveedor real es un adaptador sustituible.
 
 **Por qué importa aquí más que en otros proyectos.** Los servicios de la Administración
@@ -1072,8 +1072,8 @@ Con Laravel, todo eso viene en la caja, mantenido por el mismo equipo, con la mi
 cadencia de versiones y una única superficie de actualización.
 
 Con Next.js hay que componerlo: Auth.js o similar para identidad, una librería de
-autorización, Zod para validación, Prisma o Drizzle para ORM y migraciones, BullMQ —que
-exige Redis, reintroduciendo el componente que §10.5 justifica evitar— o un servicio
+autorización, Zod para validación, Prisma o Drizzle para ORM y migraciones, BullMQ -que
+exige Redis, reintroduciendo el componente que §10.5 justifica evitar- o un servicio
 externo para colas, un cron externo o funciones programadas del proveedor, Resend o
 Nodemailer para correo, y un backoffice a medida o de pago.
 
@@ -1132,7 +1132,7 @@ Dos filas merecen énfasis, porque no son preferencias:
 ### 11.4 Otras alternativas consideradas honestamente
 
 - **.NET / ASP.NET Core.** Técnicamente excelente y una elección perfectamente
-  defendible: madurez, rendimiento, tipado fuerte, y —punto nada menor— es donde está la
+  defendible: madurez, rendimiento, tipado fuerte, y (punto nada menor) es donde está la
   mayor concentración de proveedores del sector público español. Su desventaja aquí es de
   *gravedad*, no de calidad: mantiene al organismo en la órbita del mismo fabricante,
   y uno de los objetivos declarados es reducir esa concentración. Si el objetivo fuese
@@ -1173,20 +1173,20 @@ familiaridad con un producto concreto y, para ciertas tareas, socios certificado
 
 **Y un dato del propio pliego que juega en contra de la propuesta, y que hay que poner
 encima de la mesa:** el PCAP, al definir los perfiles del equipo, enumera como
-tecnologías de backend **Java, Python y Node** —y como bases de datos PostgreSQL, MySQL y
-MongoDB—. **PHP no aparece.** Una oferta basada en Laravel habría tenido que argumentar
+tecnologías de backend **Java, Python y Node** -y como bases de datos PostgreSQL, MySQL y
+MongoDB-. **PHP no aparece.** Una oferta basada en Laravel habría tenido que argumentar
 la equivalencia del perfil. No es un impedimento formal, porque la lista no es cerrada y
 el pliego admite alternativas justificadas, pero es un obstáculo real en la práctica de
 la contratación pública española.
 
 Obsérvese, en cambio, que **PostgreSQL sí figura expresamente** entre las bases de datos
-previstas por el pliego. La parte más discutida de nuestra propuesta —el almacén de
-datos— es la que el propio pliego ya contemplaba.
+previstas por el pliego. La parte más discutida de nuestra propuesta -el almacén de
+datos- es la que el propio pliego ya contemplaba.
 
 Se traslada a §24 como decisión abierta: **si el organismo tiene ya un equipo .NET o Java
 consolidado, la recomendación de Laravel debe reconsiderarse.** La tesis central de este
-informe —monolito modular, base relacional única, HTML servido, sin plataforma
-propietaria interpuesta— **no depende del lenguaje**. Sobrevive igual en .NET, en Java y
+informe -monolito modular, base relacional única, HTML servido, sin plataforma
+propietaria interpuesta- **no depende del lenguaje**. Sobrevive igual en .NET, en Java y
 en Python. Laravel es la elección más eficiente para un equipo pequeño, no un dogma.
 
 ### 11.6 El riesgo de gobernanza de Laravel, dicho de frente
@@ -1235,14 +1235,14 @@ buscar por proximidad a un punto.
   dentro de un distrito), isócronas, cálculo de rutas o análisis territorial.
 
 **Decisión: no incluir PostGIS de partida.** Es una extensión, no un servidor nuevo, así
-que el coste de añadirla después es bajo — y esa es precisamente la razón por la que no
+que el coste de añadirla después es bajo, y esa es precisamente la razón por la que no
 hay que añadirla antes de necesitarla. Se documenta el disparador: **el primer requisito
 que involucre geometrías de área**.
 
 `pg_trgm` sí se incluye, porque el requisito de búsqueda tolerante a erratas en
 direcciones es previsible y su coste es nulo.
 
-### 12.3 Esquema — decisiones estructurales
+### 12.3 Esquema, decisiones estructurales
 
 Sólo las decisiones no obvias. El esquema completo pertenece a la fase 2.
 
@@ -1265,7 +1265,7 @@ más incómodo que modificar una restricción.
 a la misma convocatoria. La regla vive en la base, no sólo en la aplicación: es la única
 forma de que resista a la concurrencia y a un error de código.
 
-**Adjudicación única.** `UNIQUE (property_id) WHERE status = 'active'` — índice parcial.
+**Adjudicación única.** `UNIQUE (property_id) WHERE status = 'active'`, índice parcial.
 Una vivienda no puede tener dos adjudicaciones vivas. Combinado con un cerrojo consultivo
 durante el proceso de adjudicación, resuelve la concurrencia sin coordinación externa.
 
@@ -1359,7 +1359,7 @@ directamente.
 
 Sólo existen tres caminos, y son los mismos para ambas arquitecturas:
 
-1. **NubeSARA** — servicio de nube híbrida cuyo proveedor es la Secretaría General de
+1. **NubeSARA**, servicio de nube híbrida cuyo proveedor es la Secretaría General de
    Administración Digital, articulado por convenio con cada organismo. Hay convenios
    publicados en el BOE (Agencia Espacial Española, BOE-A-2024-26902; Instituto de la
    Juventud, BOE-A-2024-25018; Confederación Hidrográfica del Duero, BOE-A-2023-23282).
@@ -1403,7 +1403,7 @@ plazo.
 PHP tiene soporte nativo de SOAP y un ecosistema maduro de firma XML. Java lo tiene aún
 mejor, y es donde está la mayor experiencia previa del sector público español en SCSP.
 Node.js es el peor posicionado de los tres. Es un factor real en la elección de
-plataforma (§11.3) y una razón concreta —no estética— para descartar Next.js como núcleo
+plataforma (§11.3) y una razón concreta (no estética) para descartar Next.js como núcleo
 del sistema.
 ## 14. Seguridad y ENS
 
@@ -1411,7 +1411,7 @@ del sistema.
 puede serlo**. Este informe no usa en ningún punto "un servidor barato" como argumento de
 ahorro, y rechaza expresamente esa línea de razonamiento.
 
-### 14.1 Categorización ENS — verificada en el pliego
+### 14.1 Categorización ENS, verificada en el pliego
 
 No hay que inferirla. El pliego de prescripciones técnicas lo establece literalmente
 (pág. 34):
@@ -1442,25 +1442,25 @@ este sistema, por buena que sea su arquitectura.
 
 | Ámbito | Medida | Origen |
 |---|---|---|
-| Identificación | Cl@ve para ciudadanos; segundo factor obligatorio para todo el personal | ENS · op.acc |
-| Autorización | Control por rol **y** por política sobre el propio expediente | ENS · op.acc |
+| Identificación | Cl@ve para ciudadanos; segundo factor obligatorio para todo el personal | ENS op.acc |
+| Autorización | Control por rol **y** por política sobre el propio expediente | ENS op.acc |
 | Autorización | Motivo obligatorio y registrado para acceder a datos de categoría especial | RGPD art. 9 |
-| Cifrado en tránsito | TLS 1.3, HSTS con precarga | ENS · mp.com |
-| Cifrado en reposo | Volúmenes y copias cifrados; **además**, cifrado de campo para categoría especial | ENS · mp.info |
-| Trazabilidad | Registro inmutable, encadenado por hash, con reloj sincronizado | ENS · op.exp |
-| Segregación | Entornos separados; sin datos reales fuera de producción | ENS · mp.sw |
-| Secretos | Almacén de secretos; nunca en el repositorio ni en variables de entorno en claro | ENS · op.exp |
-| Copias | Cifradas, con restauración **probada periódicamente**, y copia en ubicación independiente | ENS · mp.info |
-| Continuidad | Plan documentado y ensayado | ENS · op.cont |
-| Perímetro | WAF, limitación de tasa, protección de denegación de servicio | ENS · mp.com |
-| Aplicación | Protección frente a CSRF, XSS, SSRF, inyección; consultas parametrizadas | ENS · mp.sw |
-| Ficheros | Análisis antivirus antes de aceptar; validación de tipo real, no de extensión; servicio desde dominio separado con `Content-Disposition: attachment` y `X-Content-Type-Options: nosniff` | ENS · mp.sw |
+| Cifrado en tránsito | TLS 1.3, HSTS con precarga | ENS mp.com |
+| Cifrado en reposo | Volúmenes y copias cifrados; **además**, cifrado de campo para categoría especial | ENS mp.info |
+| Trazabilidad | Registro inmutable, encadenado por hash, con reloj sincronizado | ENS op.exp |
+| Segregación | Entornos separados; sin datos reales fuera de producción | ENS mp.sw |
+| Secretos | Almacén de secretos; nunca en el repositorio ni en variables de entorno en claro | ENS op.exp |
+| Copias | Cifradas, con restauración **probada periódicamente**, y copia en ubicación independiente | ENS mp.info |
+| Continuidad | Plan documentado y ensayado | ENS op.cont |
+| Perímetro | WAF, limitación de tasa, protección de denegación de servicio | ENS mp.com |
+| Aplicación | Protección frente a CSRF, XSS, SSRF, inyección; consultas parametrizadas | ENS mp.sw |
+| Ficheros | Análisis antivirus antes de aceptar; validación de tipo real, no de extensión; servicio desde dominio separado con `Content-Disposition: attachment` y `X-Content-Type-Options: nosniff` | ENS mp.sw |
 | Ficheros | Acceso exclusivamente por URL firmada de vigencia corta | Diseño |
-| Sesión | Cookies `Secure`, `HttpOnly`, `SameSite=Lax`; renovación de identificador; expiración por inactividad | ENS · op.acc |
-| Cadena de suministro | Inventario de dependencias, análisis de vulnerabilidades en integración continua, versiones fijadas | ENS · op.pl |
-| Verificación | Test de intrusión antes de producción y con periodicidad | ENS · mp.sw |
+| Sesión | Cookies `Secure`, `HttpOnly`, `SameSite=Lax`; renovación de identificador; expiración por inactividad | ENS op.acc |
+| Cadena de suministro | Inventario de dependencias, análisis de vulnerabilidades en integración continua, versiones fijadas | ENS op.pl |
+| Verificación | Test de intrusión antes de producción y con periodicidad | ENS mp.sw |
 | Certificación | Auditoría de conformidad ENS **nivel alto** por entidad acreditada | RD 311/2022 |
-| Divulgación | Publicar `/.well-known/security.txt` — hoy ausente en el portal (§3) | Buena práctica |
+| Divulgación | Publicar `/.well-known/security.txt`, hoy ausente en el portal (§3) | Buena práctica |
 
 ### 14.3 SSRF, el riesgo característico de este sistema
 
@@ -1474,8 +1474,8 @@ controlado. Ninguna URL proporcionada por un usuario se solicita jamás desde el
 
 ### 14.4 Protección de datos
 
-- **Base jurídica:** cumplimiento de misión de interés público. No consentimiento —el
-  consentimiento sería revocable y haría inviable el procedimiento—, salvo para
+- **Base jurídica:** cumplimiento de misión de interés público. No consentimiento -el
+  consentimiento sería revocable y haría inviable el procedimiento-, salvo para
   tratamientos accesorios.
 - **Evaluación de impacto:** obligatoria. Tratamiento a gran escala, datos de categoría
   especial y evaluación sistemática con efectos sobre las personas.
@@ -1615,8 +1615,8 @@ más fácil hacer trampa, y donde una trampa destruiría todo lo demás.
 **Y ahora la conclusión que conviene poner por delante, porque contradice la expectativa
 con la que se inició este trabajo:**
 
-> El importe adjudicado —1.184.998 € sin IVA por cuatro años, es decir **296.250 € al
-> año**— **no es un precio desproporcionado** para el alcance contratado. Equivale
+> El importe adjudicado -1.184.998 € sin IVA por cuatro años, es decir **296.250 € al
+> año**- **no es un precio desproporcionado** para el alcance contratado. Equivale
 > aproximadamente al coste de un equipo de 3 a 4 personas a tarifas de consultoría,
 > incluyendo consultoría de procesos, desarrollo, implantación, formación, soporte y
 > mantenimiento evolutivo durante cuatro años.
@@ -1633,8 +1633,8 @@ razonable. Lo que hace falta examinar es **lo que no está en esa cifra**.
 
 **Desarrollo (CAPEX), estimación de ingeniería.**
 
-Se estima por módulos y se declara el método: equipo de 4 personas —2 desarrolladores de
-producto, 1 de integraciones, 1 con perfil de diseño y accesibilidad—, más dirección
+Se estima por módulos y se declara el método: equipo de 4 personas -2 desarrolladores de
+producto, 1 de integraciones, 1 con perfil de diseño y accesibilidad-, más dirección
 técnica a tiempo parcial y auditorías externas.
 
 | Bloque | Persona-mes | Comentario |
@@ -1674,7 +1674,7 @@ que el ENS exigido es de **nivel alto** y no medio.
 Esta cifra se declara con incomodidad deliberada: **es alta, y es honesta**. Un informe
 que dijera "150.000 €" sería más vistoso y menos defendible.
 
-**Operación (OPEX) — infraestructura, con precios verificados de Azure (§04):**
+**Operación (OPEX), infraestructura, con precios verificados de Azure (§04):**
 
 Se dimensiona sobre **el mismo proveedor que usa el sistema actual**, deliberadamente,
 para que ningún ahorro pueda atribuirse a haberse mudado a un alojamiento más barato.
@@ -1711,31 +1711,31 @@ administrativo complejo.
 
 ### 18.2 Comparación a 1, 4, 5 y 10 años
 
-**Escenario A — arquitectura actual.** Servicios según contrato verificado, más
+**Escenario A, arquitectura actual.** Servicios según contrato verificado, más
 licencias a precio de lista bajo tres supuestos de uso ciudadano. Se asume que a partir
 del año 5 se renueva un contrato de servicios de magnitud similar.
 
-**Escenario B — arquitectura propuesta.** CAPEX en el año 1, luego infraestructura y
+**Escenario B, arquitectura propuesta.** CAPEX en el año 1, luego infraestructura y
 mantenimiento.
 
 Cifras en miles de euros, sin IVA.
 
 | Concepto | Año 1 | 4 años | 5 años | 10 años |
 |---|---|---|---|---|
-| **A — Servicios contratados** (verificado) | 296 | **1.185** | 1.481 | 2.962 |
-| A — Licencias, uso bajo (pico 2.000/mes) | 44 | 177 | 221 | 442 |
-| A — Licencias, uso medio (pico 25.000/mes) | 207 | 828 | 1.035 | 2.070 |
-| A — Licencias, uso alto (pico 50.000/mes) | 414 | 1.656 | 2.070 | 4.140 |
-| A — Licencias de gestor (17 internos, D365 CS Ent.) | 20 | 79 | 98 | 197 |
-| **A — Total, uso bajo** | **360** | **1.441** | **1.800** | **3.601** |
-| **A — Total, uso medio** | **523** | **2.092** | **2.614** | **5.229** |
-| **A — Total, uso alto** | **730** | **2.920** | **3.649** | **7.299** |
+| **A, Servicios contratados** (verificado) | 296 | **1.185** | 1.481 | 2.962 |
+| A, Licencias, uso bajo (pico 2.000/mes) | 44 | 177 | 221 | 442 |
+| A, Licencias, uso medio (pico 25.000/mes) | 207 | 828 | 1.035 | 2.070 |
+| A, Licencias, uso alto (pico 50.000/mes) | 414 | 1.656 | 2.070 | 4.140 |
+| A, Licencias de gestor (17 internos, D365 CS Ent.) | 20 | 79 | 98 | 197 |
+| **A, Total, uso bajo** | **360** | **1.441** | **1.800** | **3.601** |
+| **A, Total, uso medio** | **523** | **2.092** | **2.614** | **5.229** |
+| **A, Total, uso alto** | **730** | **2.920** | **3.649** | **7.299** |
 | | | | | |
-| **B — Desarrollo** | 510–790 | 510–790 | 510–790 | 510–790 |
-| B — Infraestructura | 30 | 121 | 152 | 303 |
-| B — Mantenimiento (desde año 2) | 0 | 480–870 | 640–1.160 | 1.440–2.610 |
-| B — Auditorías periódicas (ENS alto, seguridad, accesibilidad) | — | 110 | 145 | 290 |
-| **B — Total (rango)** | **540–820** | **1.221–1.891** | **1.447–2.247** | **2.543–4.003** |
+| **B, Desarrollo** | 510–790 | 510–790 | 510–790 | 510–790 |
+| B, Infraestructura | 30 | 121 | 152 | 303 |
+| B, Mantenimiento (desde año 2) | 0 | 480–870 | 640–1.160 | 1.440–2.610 |
+| B ( Auditorías periódicas (ENS alto, seguridad, accesibilidad) | ) | 110 | 145 | 290 |
+| **B, Total (rango)** | **540–820** | **1.221–1.891** | **1.447–2.247** | **2.543–4.003** |
 
 **Lectura honesta de esta tabla.**
 
@@ -1813,7 +1813,7 @@ que se va colabora.
 
 | Activo | Mecanismo | Estimación |
 |---|---|---|
-| Datos | `pg_dump` / `pg_restore` — formato abierto y documentado | Horas |
+| Datos | `pg_dump` / `pg_restore`, formato abierto y documentado | Horas |
 | Documentos | Copia entre almacenes compatibles con S3 | Horas a días según volumen |
 | Aplicación | Imagen de contenedor OCI + código fuente | Inmediato |
 | Configuración | Variables de entorno documentadas | Inmediato |
@@ -1843,7 +1843,7 @@ su adaptador alternativo probado.
 | Flujos de Power Automate | **No hay equivalente** | **Alta**: hay que leer cada flujo y reimplementarlo |
 | Reglas de negocio de la plataforma | **No hay equivalente** | Alta |
 | Configuración del portal | **No hay equivalente** | Media |
-| Aplicación JavaScript | Código propio | **Baja** — es lo más portable del sistema |
+| Aplicación JavaScript | Código propio | **Baja**, es lo más portable del sistema |
 | Permisos y roles | Configuración propietaria | Media |
 | Conocimiento del equipo | Específico del producto | Media |
 
@@ -1869,10 +1869,10 @@ al tomarla, no al abandonarla.
 
 | Tipo | Actual | Propuesta |
 |---|---|---|
-| **De plataforma** — el software sólo se ejecuta ahí | Alta: Power Pages y Dataverse | **Ninguna**: contenedores estándar |
-| **De datos** — el modelo sólo se entiende ahí | Media-alta | **Ninguna**: esquema SQL documentado |
-| **Económica** — el precio lo fija otro | **Alta**: tarifa por usuario ciudadano | Baja: infraestructura en mercado competitivo |
-| **De competencia** — sólo ciertos perfiles pueden mantenerlo | Media-alta: perfiles certificados | Media: perfiles web generales |
+| **De plataforma**, el software sólo se ejecuta ahí | Alta: Power Pages y Dataverse | **Ninguna**: contenedores estándar |
+| **De datos**, el modelo sólo se entiende ahí | Media-alta | **Ninguna**: esquema SQL documentado |
+| **Económica**, el precio lo fija otro | **Alta**: tarifa por usuario ciudadano | Baja: infraestructura en mercado competitivo |
+| **De competencia**, sólo ciertos perfiles pueden mantenerlo | Media-alta: perfiles certificados | Media: perfiles web generales |
 
 **La dependencia económica es la decisiva**, porque es la única que no se resuelve con
 trabajo. Las otras tres se resuelven pagando una migración; ésta sólo se resuelve
@@ -1916,7 +1916,7 @@ Dos revisores. No se les permite argumentar de forma superficial y no se les con
 
 ---
 
-### Ronda 1 — El arquitecto enterprise ataca
+### Ronda 1, El arquitecto enterprise ataca
 
 **E:** Vuestra propuesta ignora por qué existen estas plataformas. No compráis software:
 compráis *transferencia de riesgo*. Cuando Dataverse tiene una vulnerabilidad, la parchea
@@ -1939,7 +1939,7 @@ aparece si se cumplen vuestras hipótesis de uso.
 
 ---
 
-### Ronda 1 — El ingeniero minimalista responde
+### Ronda 1, El ingeniero minimalista responde
 
 **M:** Acepto lo del ENS de nivel alto. Es el mejor argumento que has hecho y no lo voy a
 esquivar: **una arquitectura no es adjudicable por sí sola**. Lo que propongo no es que lo
@@ -1951,7 +1951,7 @@ distintas y las estás mezclando.
 **M:** Sobre los parches: llevas razón en que el fabricante parchea su plataforma. Pero
 mira lo que ya está pasando aquí. **El portal ciudadano es una aplicación JavaScript a
 medida de 1,33 MB.** Ese código lo parchea el integrador, no Microsoft. La transferencia
-de riesgo que describes cubre la plataforma, no cubre la aplicación — y la aplicación es
+de riesgo que describes cubre la plataforma, no cubre la aplicación, y la aplicación es
 donde está la lógica.
 
 **M:** Sobre el soporte: el propio pliego contrata **lunes a viernes de nueve a seis, sin
@@ -1967,7 +1967,7 @@ mismo desde Laravel que desde Dynamics.
 
 ---
 
-### Ronda 2 — El enterprise afina
+### Ronda 2, El enterprise afina
 
 **E:** Entonces reconoces que la mayor parte del coste es igual. ¿Qué queda de tu tesis?
 
@@ -1982,7 +1982,7 @@ Angular o Vue** en el de frontend. Tu propuesta va contra las dos cosas.
 
 ---
 
-### Ronda 2 — El minimalista contraataca
+### Ronda 2, El minimalista contraataca
 
 **M:** Queda lo que separa a las dos arquitecturas cuando todo lo demás es igual:
 **una licencia que escala con el número de ciudadanos atendidos, y un coste de salida de
@@ -2001,13 +2001,13 @@ pruebas automáticas. La tuya se verifica revisando pantallas de configuración.
 **M:** Sobre los microservicios en el pliego: eso es un requisito **de perfil profesional**,
 no de solución. El pliego pide un arquitecto que sepa de microservicios, no un sistema de
 microservicios. Y sobre React: mi propuesta admite islas de JavaScript donde aportan
-valor. Lo que rechazo es entregar 1,33 MB para pintar un listado de viviendas — que es
+valor. Lo que rechazo es entregar 1,33 MB para pintar un listado de viviendas, que es
 justamente lo que hoy penaliza el rendimiento y complica el cumplimiento de la WCAG 2.1
 que el mismo pliego exige.
 
 ---
 
-### Ronda 3 — Donde ninguno cede
+### Ronda 3, Donde ninguno cede
 
 **E:** Sigo pensando que subestimas el riesgo de ejecución y sobreestimas la capacidad de
 una administración de sostener software propio durante diez años. Las administraciones
@@ -2047,11 +2047,11 @@ del código ni plan de reversión**.
 
 **Argumento que ninguno de los dos puede cerrar, y que se traslada a §24:** cuánto vale,
 en euros, la transferencia de riesgo al fabricante. Es una decisión del organismo sobre su
-propia tolerancia al riesgo, no una cuestión técnica. Este informe no puede —ni debe—
+propia tolerancia al riesgo, no una cuestión técnica. Este informe no puede -ni debe-
 resolverla por él.
 ## 22. Riesgos de nuestra propia arquitectura
 
-Ataque deliberado a la propuesta. Cada riesgo lleva probabilidad, impacto y mitigación —o
+Ataque deliberado a la propuesta. Cada riesgo lleva probabilidad, impacto y mitigación -o
 la admisión de que no la tiene.
 
 | # | Riesgo | Prob. | Impacto | Mitigación |
@@ -2062,7 +2062,7 @@ la admisión de que no la tiene.
 | 4 | **Retraso en el alta administrativa** en Cl@ve, PID, DEHú, SARA. | **Alta** | Alto | Iniciar los trámites el primer día; construir con adaptadores simulados; el diseño lo permite (§13.1). |
 | 5 | **Subestimación del esfuerzo de SCSP y firma.** | Alta | Alto | Prototipar esos dos adaptadores **antes** de comprometer plazos. Son los que más incertidumbre tienen. |
 | 6 | **Dependencia de Laravel** y de su nueva gobernanza con capital riesgo. | Baja | Medio | Licencia MIT; uso convencional del framework; ningún producto comercial del ecosistema en ruta crítica. |
-| 7 | **PHP no figura en los perfiles del pliego.** | — | Medio | Real. La tesis del informe no depende del lenguaje (§11.4): sobrevive en Java y en .NET. |
+| 7 | **PHP no figura en los perfiles del pliego.** |, | Medio | Real. La tesis del informe no depende del lenguaje (§11.4): sobrevive en Java y en .NET. |
 | 8 | **Erosión de la modularidad** con los años. | Alta | Medio | Prueba de arquitectura que rompe la integración continua (§38.4). |
 | 9 | **Deuda de accesibilidad** tras la entrega. | Media | Alto | Comprobaciones automáticas en integración continua + auditoría externa periódica. Obligación legal. |
 | 10 | **El sistema económico SAP impone su ritmo.** | Alta | Medio | Adaptador asíncrono con bandeja de salida; el procedimiento no se bloquea por SAP. |
@@ -2096,7 +2096,7 @@ abordan en la primera iteración, contra los entornos de pruebas oficiales, ante
 comprometer plazos. Responde al riesgo 5.
 
 **4. La pasarela SARA es un componente explícito**, con su propio ciclo de vida y su
-propio plan —convenio NubeSARA o punto de presencia propio—. Deja de ser una flecha en un
+propio plan -convenio NubeSARA o punto de presencia propio-. Deja de ser una flecha en un
 diagrama.
 
 **5. Prueba de arquitectura en la integración continua.** La modularidad se verifica
@@ -2180,15 +2180,15 @@ informe.
 
 **Sí.**
 
-Las funciones que Power Pages presta a este sistema —alojamiento con protección
-perimetral, autenticación federada y exposición autorizada de datos— son sustituibles por
+Las funciones que Power Pages presta a este sistema -alojamiento con protección
+perimetral, autenticación federada y exposición autorizada de datos- son sustituibles por
 componentes estándar cuyo coste y comportamiento son conocidos. El argumento decisivo no
 es de coste: es que **el portal ciudadano ya está programado a medida** (§3, §6.3), de
 modo que la principal justificación de una plataforma de desarrollo rápido no aplica al
 caso observable.
 
 Con una condición: la nueva solución debe **igualar o superar** la postura de seguridad de
-fábrica observada en §3 —cabeceras, política de contenido, gestión de certificados—, y eso
+fábrica observada en §3 -cabeceras, política de contenido, gestión de certificados-, y eso
 exige trabajo explícito y sostenido.
 
 ### ¿Podemos eliminar el CRM comercial?
@@ -2199,8 +2199,8 @@ Un procedimiento administrativo reglado no es una relación comercial. Modelarlo
 producto pensado para ciclos de venta añade trabajo de adaptación y una segunda
 representación del mismo expediente.
 
-La reserva: si el organismo necesita capacidades genuinas de CRM —campañas, centro de
-contacto, gestión comercial de suelos— eso debe evaluarse aparte y por sus propios
+La reserva: si el organismo necesita capacidades genuinas de CRM -campañas, centro de
+contacto, gestión comercial de suelos- eso debe evaluarse aparte y por sus propios
 méritos. La conclusión es que **no debe ser el sistema de registro del expediente**, no
 que no pueda existir para otra cosa.
 
@@ -2239,8 +2239,8 @@ copias, restauración y réplica sin aportar nada.
 **Y una cuarta, que no es software:** la **pasarela hacia Red SARA**. No la impone nuestra
 arquitectura, la impone el ecosistema, y afecta por igual a cualquier solución.
 
-Todo lo demás —Redis, motor de búsqueda, bus de eventos, motor de procesos, orquestador de
-contenedores, microservicios— **no ha logrado justificar su existencia** en ninguna
+Todo lo demás -Redis, motor de búsqueda, bus de eventos, motor de procesos, orquestador de
+contenedores, microservicios- **no ha logrado justificar su existencia** en ninguna
 sección de este informe.
 
 ### Stack mínimo defendible
@@ -2276,7 +2276,7 @@ Nueve elementos. Ninguno propietario. Ninguna licencia por usuario.
 
 **Esta lista es larga a propósito.** Un análisis serio tiene que reconocer que la mayor
 parte del importe adjudicado corresponde a trabajo real sobre complejidad real. **1.184.998 €
-por cuatro años —296.250 € anuales— no es un precio desproporcionado para este alcance.**
+por cuatro años (296.250 € anuales) no es un precio desproporcionado para este alcance.**
 
 ### ¿Qué partes parecen consecuencia de la arquitectura elegida?
 
@@ -2364,11 +2364,11 @@ peticiones por segundo, CPU, memoria, conexiones a la base de datos, latencias y
 **No forman parte de esta fase.** Se enuncian para fijar qué tendrá que probar el
 experimento, de modo que no se pueda mover la portería después.
 
-**Demostrador A — portal público.** Catálogo, promociones, convocatorias, filtros, fichas,
+**Demostrador A, portal público.** Catálogo, promociones, convocatorias, filtros, fichas,
 imágenes, mapa, requisitos, diseño adaptable y accesibilidad, con datos públicos. Objetivo:
 medir cuánto código e infraestructura requiere realmente la experiencia pública.
 
-**Demostrador B — aplicación transaccional.** Autenticación, unidad de convivencia,
+**Demostrador B, aplicación transaccional.** Autenticación, unidad de convivencia,
 solicitud, documentos, verificación, cambio de estado, adjudicación y notificación. Las
 integraciones oficiales se implementan con adaptadores simulados; **la lógica de dominio
 es real**, incluidas transacciones, autorización y auditoría.
@@ -2401,11 +2401,11 @@ demostraría algo distinto de lo que se pretende.
 | Perímetro y WAF | Azure Front Door | CDN + WAF equivalente | Proveedor de CDN | Igual | Alta |
 | Alta disponibilidad | Gestionada por el fabricante | Dos instancias + base con HA | Proveedor | Mayor operación | Alta |
 | Copias y recuperación | Gestionadas | Propias, con ensayo trimestral | Proveedor | Mayor operación | Alta |
-| Conformidad ENS alto | Heredada de la plataforma + del sistema | **Del sistema y del operador** | Auditor acreditado | **Mayor** | — |
+| Conformidad ENS alto | Heredada de la plataforma + del sistema | **Del sistema y del operador** | Auditor acreditado | **Mayor** |, |
 | Auditoría | Auditoría de Dataverse | Tabla inmutable encadenada por hash | Ninguna | Igual | Alta |
 | Accesibilidad | Parcial, sin nivel declarado | WCAG 2.1 AA verificada | Ninguna | Menor de mantener | Alta |
-| **Licencia por ciudadano** | **Escala con el uso** | **0 €** | Ninguna | **Muy menor** | — |
-| **Coste de salida** | Meses | Días | Ninguna | **Muy menor** | — |
+| **Licencia por ciudadano** | **Escala con el uso** | **0 €** | Ninguna | **Muy menor** |, |
+| **Coste de salida** | Meses | Días | Ninguna | **Muy menor** |, |
 
 **Las filas que deciden son las tres últimas y las cuatro marcadas "Igual".** Las
 "Igual" demuestran que este informe no reclama ahorros que no existen. Las últimas
@@ -2446,13 +2446,13 @@ auditoría.
 
 **Documentación contractual (fuente primaria verificada)**
 
-- BOE-B-2025-28508 — anuncio de licitación, expediente 132019. Valor estimado
+- BOE-B-2025-28508, anuncio de licitación, expediente 132019. Valor estimado
   1.880.949,00 € sin IVA.
-- BOE-B-2026-771 — formalización. Adjudicataria EY Transforma Servicios de Consultoría,
+- BOE-B-2026-771, formalización. Adjudicataria EY Transforma Servicios de Consultoría,
   S.L. (B88428404), 1.184.998,00 € sin IVA, 26/11/2025, 8 ofertas presentadas (2 PYME).
-- **PCAP del expediente 132019**, 46 páginas — pliego de cláusulas administrativas
+- **PCAP del expediente 132019**, 46 páginas, pliego de cláusulas administrativas
   particulares.
-- **PPT del expediente 132019**, 40 páginas — pliego de prescripciones técnicas.
+- **PPT del expediente 132019**, 40 páginas, pliego de prescripciones técnicas.
 - Memoria justificativa del expediente 132019.
 - Obtenidos del fichero de datos abiertos de sindicación de la Plataforma de Contratación
   del Sector Público `licitacionesPerfilesContratanteCompleto3_202507.zip`, entrada con
@@ -2462,13 +2462,13 @@ auditoría.
 
 **Marco normativo**
 
-- Real Decreto 311/2022 — Esquema Nacional de Seguridad (BOE-A-2022-7191).
-- Real Decreto 1112/2018 — accesibilidad de sitios web del sector público.
-- Ley 40/2015, artículo 157 — reutilización de aplicaciones entre administraciones.
-- BOE-A-2015-14215 — prescripciones técnicas de Cl@ve.
-- BOE-A-2017-8018 — condiciones técnicas de conexión a la Red SARA.
-- BOE-A-2011-13173 — norma técnica de interoperabilidad de conexión a la Red SARA.
-- BOE-A-2024-26902, BOE-A-2024-25018, BOE-A-2023-23282 — convenios NubeSARA.
+- Real Decreto 311/2022, Esquema Nacional de Seguridad (BOE-A-2022-7191).
+- Real Decreto 1112/2018, accesibilidad de sitios web del sector público.
+- Ley 40/2015, artículo 157, reutilización de aplicaciones entre administraciones.
+- BOE-A-2015-14215, prescripciones técnicas de Cl@ve.
+- BOE-A-2017-8018, condiciones técnicas de conexión a la Red SARA.
+- BOE-A-2011-13173, norma técnica de interoperabilidad de conexión a la Red SARA.
+- BOE-A-2024-26902, BOE-A-2024-25018, BOE-A-2023-23282, convenios NubeSARA.
 
 **Tarifas**
 

@@ -15,7 +15,7 @@ desviación, se anota como tal.
 > existen. La complejidad debe ganarse el derecho a existir.
 
 Corolario operativo: **cada pieza nueva exige una entrada en `docs/decisions/`** con
-problema, opciones, decisión, coste, dependencia generada, alternativa y —obligatorio— la
+problema, opciones, decisión, coste, dependencia generada, alternativa y (obligatorio) la
 señal medible que nos obligaría a revisar la decisión.
 
 ---
@@ -37,7 +37,7 @@ Para que algo sea publicable debe cumplir, sin excepción:
 
 ## Fases
 
-### Fase 1 — Auditoría arquitectónica ✅ **completada**
+### Fase 1, Auditoría arquitectónica ✅ **completada**
 
 **Entregable:** `docs/CASA47-minimal-architecture-review.md` + los seis informes de
 investigación en `docs/research/`.
@@ -45,7 +45,7 @@ investigación en `docs/research/`.
 **Puerta de salida:** revisión conjunta y aprobación explícita de la arquitectura.
 **Estado: esperando revisión.**
 
-### Fase 2 — Diseño funcional y modelo de datos
+### Fase 2, Diseño funcional y modelo de datos
 
 **Entregables:**
 - Especificación funcional por módulo.
@@ -57,7 +57,7 @@ investigación en `docs/research/`.
 **Definición de terminado:** el modelo permite responder, sin ambigüedad, a las preguntas
 de un recurso administrativo tipo. Un tercero puede implementarlo sin preguntarnos.
 
-### Fase 3 — Diseño de interfaz
+### Fase 3, Diseño de interfaz
 
 **Entregables:** sistema de componentes accesibles, recorridos principales, estados de
 error y vacío, comportamiento adaptable.
@@ -65,7 +65,7 @@ error y vacío, comportamiento adaptable.
 **Definición de terminado:** cada componente cumple WCAG 2.1 AA verificado con teclado y
 lector de pantalla, no sólo con herramienta automática.
 
-### Fase 4 — Implementación del demostrador
+### Fase 4, Implementación del demostrador
 
 **Entregables:** demostrador A (portal público) y demostrador B (aplicación transaccional
 con adaptadores simulados y lógica de dominio real).
@@ -73,7 +73,7 @@ con adaptadores simulados y lógica de dominio real).
 **Definición de terminado:** se despliega desde cero con un comando, pasa todas las
 pruebas, y un tercero puede levantarlo con el README.
 
-### Fase 5 — Medición y comparación económica
+### Fase 5, Medición y comparación económica
 
 **Entregables:** las métricas del Anexo E del informe, reproducibles, con método
 documentado.

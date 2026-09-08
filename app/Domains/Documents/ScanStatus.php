@@ -9,8 +9,8 @@ namespace App\Domains\Documents;
  * restricción CHECK `documents_scan_status_check` de la migración.
  *
  * Un documento sólo puede considerarse válido y descargable en estado `Clean`. Todos
- * los demás estados —incluido `Pending`, el estado inicial de todo documento recién
- * subido— bloquean la descarga: el binario existe en almacenamiento, pero nadie puede
+ * los demás estados -incluido `Pending`, el estado inicial de todo documento recién
+ * subido- bloquean la descarga: el binario existe en almacenamiento, pero nadie puede
  * darlo por bueno hasta que el análisis termine.
  */
 enum ScanStatus: string

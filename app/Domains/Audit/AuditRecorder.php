@@ -27,8 +27,8 @@ use Illuminate\Support\Str;
  * el hash siguiente sin arriesgarse a partir del mismo eslabón. Se resuelve con un
  * cerrojo consultivo de PostgreSQL, que es un punto de serialización real.
  *
- * A los volúmenes de este sistema —del orden de 10⁷ eventos en cuatro años, con picos de
- * decenas por segundo en el cierre de una convocatoria— es asumible y se ha medido. Si
+ * A los volúmenes de este sistema -del orden de 10⁷ eventos en cuatro años, con picos de
+ * decenas por segundo en el cierre de una convocatoria- es asumible y se ha medido. Si
  * algún día dejara de serlo, la salida conocida es encadenar por día o por entidad en
  * lugar de globalmente: se pierde la detección de borrado de un día entero, pero se gana
  * concurrencia. Es una decisión a tomar con datos, y hoy los datos no la piden.

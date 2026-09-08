@@ -9,7 +9,7 @@
 <li class="tarjeta">
     <div class="imagen" role="presentation">
         {{-- Proporción reservada en CSS: la imagen no desplaza el texto al cargar. --}}
-        <span aria-hidden="true">{{ $property->bedrooms }} dorm · {{ (int) $property->surface_m2 }} m²</span>
+        <span aria-hidden="true">{{ $property->bedrooms }} dorm, {{ (int) $property->surface_m2 }} m²</span>
     </div>
 
     <div class="cuerpo">

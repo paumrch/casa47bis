@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
  * Registro inmutable de quién hizo qué, cuándo, sobre qué y desde dónde
  * (§5.2). Sólo inserción: sin `updated_at`, y el usuario de aplicación debe
  * tener revocados `UPDATE`/`DELETE` sobre esta tabla a nivel de permisos de
- * base de datos (§12.3) — eso se gestiona en el aprovisionamiento del rol
+ * base de datos (§12.3), eso se gestiona en el aprovisionamiento del rol
  * de conexión, fuera del alcance de esta migración, que no conoce ese rol.
  *
  * Particionada por RANGE sobre `occurred_at` (§12.3, §5.5): es la tabla

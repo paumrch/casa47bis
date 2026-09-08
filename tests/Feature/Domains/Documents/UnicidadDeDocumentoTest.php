@@ -16,8 +16,8 @@ use Tests\TestCase;
  *
  * La acción de almacenar ya comprueba el hash antes de escribir, y esa comprobación
  * cubre el caso normal: alguien sube el mismo PDF dos veces «por si acaso». Pero entre
- * leer y escribir hay una ventana, y dos peticiones simultáneas —dos pestañas, un doble
- * clic, un reintento del navegador— pueden colarse las dos.
+ * leer y escribir hay una ventana, y dos peticiones simultáneas -dos pestañas, un doble
+ * clic, un reintento del navegador- pueden colarse las dos.
  *
  * Como con la unicidad de adjudicación, la garantía de verdad está en la base de datos:
  * ahí resiste a la concurrencia, a un error de código y a una escritura manual. La
@@ -68,8 +68,8 @@ final class UnicidadDeDocumentoTest extends TestCase
         DB::table('documents')->insert($this->fila((string) Str::uuid7(), $checksum));
         DB::table('documents')->insert($this->fila((string) Str::uuid7(), $checksum));
 
-        // Dos personas pueden aportar el mismo certificado —un modelo oficial en blanco,
-        // un justificante idéntico— y cada expediente debe conservar el suyo. La
+        // Dos personas pueden aportar el mismo certificado -un modelo oficial en blanco,
+        // un justificante idéntico- y cada expediente debe conservar el suyo. La
         // restricción es por expediente, no global, y esto lo comprueba.
         $this->assertSame(2, DB::table('documents')->where('checksum_sha256', $checksum)->count());
     }

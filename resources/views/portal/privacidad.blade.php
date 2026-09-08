@@ -20,7 +20,7 @@
     <p>
         Un portal de vivienda social lo visitan personas en situación de vulnerabilidad. El
         hecho mismo de consultarlo es un dato sensible. Cargar en esas páginas herramientas
-        de analítica de terceros —y más aún de grabación de sesión— exige una justificación
+        de analítica de terceros (y más aún de grabación de sesión) exige una justificación
         que rara vez se sostiene.
     </p>
 

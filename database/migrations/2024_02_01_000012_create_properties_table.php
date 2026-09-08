@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
  * anejos, renta, estado (§5.2).
  *
  * Borrado lógico: sí (`deleted_at`), es una de las dos excepciones de
- * §12.3 —el histórico de una vivienda importa aunque deje de ofertarse.
+ * §12.3 -el histórico de una vivienda importa aunque deje de ofertarse.
  *
  * `status` es texto con `CHECK`, no ENUM nativo (§12.3): añadir un valor no
  * debe requerir una migración de tipo.

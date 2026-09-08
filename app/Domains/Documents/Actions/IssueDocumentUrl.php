@@ -22,8 +22,8 @@ use Illuminate\Support\Carbon;
  * aplicación no está en medio de esa petición HTTP y no puede saber si el navegador
  * llegó a descargar el binario, si la petición se canceló a mitad, o si la URL se abrió
  * dos veces desde la vista previa y la descarga real. Auditar «se descargó» exigiría un
- * evento que el almacén de objetos no ofrece de forma portable —ver el contrato
- * `DocumentStorageGateway»— y que además no sería fiable.
+ * evento que el almacén de objetos no ofrece de forma portable -ver el contrato
+ * `DocumentStorageGateway»- y que además no sería fiable.
  *
  * Lo que SÍ es un hecho preciso, ocurrido dentro de esta aplicación y en este instante,
  * es que alguien con derecho de acceso pidió y obtuvo la capacidad de descargar el
@@ -34,9 +34,9 @@ final readonly class IssueDocumentUrl
 {
     /**
      * Vigencia corta a propósito: minutos, no horas. Una URL firmada de larga duración
-     * es, en la práctica, un enlace público mientras no caduque —cualquiera que la
+     * es, en la práctica, un enlace público mientras no caduque -cualquiera que la
      * intercepte o la reenvíe puede usarla sin volver a pasar por esta comprobación de
-     * acceso—.
+     * acceso-.
      */
     private const TTL_MINUTES = 5;
 
@@ -88,7 +88,7 @@ final readonly class IssueDocumentUrl
      * concreto pertenece a la capa de autorización de la aplicación, no a este módulo.
      * Un solicitante (`account`) sólo tiene derecho al documento que él mismo subió:
      * este módulo no conoce la relación entre una solicitud y la unidad de convivencia
-     * que la presentó, así que no puede —ni debe— resolver aquí un caso más amplio.
+     * que la presentó, así que no puede (ni debe) resolver aquí un caso más amplio.
      */
     private function isAuthorized(Document $document, AuditActor $requester): bool
     {

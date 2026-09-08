@@ -10,7 +10,7 @@ use DomainException;
 /**
  * Se intentó dar por válido o descargar un documento que no está en estado `Clean`.
  *
- * Cubre tanto el documento todavía `Pending` —el análisis no ha terminado— como el
+ * Cubre tanto el documento todavía `Pending` (el análisis no ha terminado) como el
  * `Infected` o el que terminó en `Error`: en los tres casos la respuesta correcta es la
  * misma, no servir el binario, y distinguirlos en el mensaje ayuda a quien opera el
  * sistema sin cambiar el comportamiento.

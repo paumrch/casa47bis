@@ -88,7 +88,7 @@ final class OutboxDispatcher
                 ->limit($limit)
                 // `FOR UPDATE SKIP LOCKED` en crudo: el constructor de consultas de
                 // Laravel ofrece lockForUpdate(), que espera a que el otro trabajador
-                // suelte la fila. Aquí queremos justo lo contrario — saltarla y seguir —,
+                // suelte la fila. Aquí queremos justo lo contrario, saltarla y seguir -,
                 // que es lo que permite que varios trabajadores compitan por la misma
                 // bandeja sin coordinación externa y sin bloquearse entre sí.
                 ->lock('FOR UPDATE SKIP LOCKED')
@@ -198,7 +198,7 @@ final class OutboxDispatcher
      * Estado de la bandeja, para la observabilidad.
      *
      * `oldest_pending_seconds` es la métrica sobre la que se alerta: el número de
-     * pendientes puede ser alto y estar todo bien —un pico de cierre de convocatoria—,
+     * pendientes puede ser alto y estar todo bien -un pico de cierre de convocatoria-,
      * pero un evento esperando desde hace media hora significa que algo está roto.
      *
      * @return array{pending: int, dead_lettered: int, oldest_pending_seconds: int|null}

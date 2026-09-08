@@ -12,7 +12,7 @@
         Consecuencias, todas deseables: la búsqueda se puede guardar en favoritos y
         compartir por WhatsApp, el botón de volver del navegador funciona, la página se
         puede recargar sin reenviar nada, y funciona igual en un móvil antiguo con la red
-        justa — que es el dispositivo de buena parte de quien busca vivienda asequible.
+        justa, que es el dispositivo de buena parte de quien busca vivienda asequible.
     --}}
     <form class="filtros" method="get" action="{{ route('viviendas.index') }}" role="search" aria-labelledby="titulo-filtros">
         <h2 id="titulo-filtros" style="margin-top:0">Filtrar la búsqueda</h2>

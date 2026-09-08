@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
  * Consumir la Plataforma de Intermediación de Datos exige, antes que una línea de
  * código: el alta del organismo, un convenio de cesión ligado a este procedimiento
  * concreto, certificados de componente, un entorno de pruebas y conectividad con Red
- * SARA —por convenio NubeSARA con la SGAD o por un punto de presencia propio—. Nada de
+ * SARA -por convenio NubeSARA con la SGAD o por un punto de presencia propio-. Nada de
  * eso lo resuelve el equipo de desarrollo, y ninguno de esos trámites tiene una fecha que
  * dependa de nosotros.
  *

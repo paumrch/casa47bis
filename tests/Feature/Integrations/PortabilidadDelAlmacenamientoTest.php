@@ -45,7 +45,7 @@ final class PortabilidadDelAlmacenamientoTest extends TestCase
     {
         // Contenido binario con bytes nulos y UTF-8: un PDF real no es texto ASCII,
         // y un adaptador que corrompa esto pasaría desapercibido con "hola mundo".
-        $contents = "%PDF-1.7\n\x00\x01\x02 Ñandú — acentos y \xFF bytes altos\n%%EOF";
+        $contents = "%PDF-1.7\n\x00\x01\x02 Ñandú, acentos y \xFF bytes altos\n%%EOF";
 
         $key = $this->storage->put($contents, 'application/pdf');
 

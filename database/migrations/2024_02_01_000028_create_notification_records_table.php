@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Comunicación emitida y su acuse (§5.2). `kind` distingue **notificación
- * fehaciente** —con efectos jurídicos y plazos— de **aviso informativo**:
+ * fehaciente** (con efectos jurídicos y plazos) de **aviso informativo**:
  * confundirlas es un defecto grave en un procedimiento administrativo, así
  * que se modela como columna obligatoria con `CHECK`, no como convención
  * en el nombre del canal. `acknowledged_at` sólo tiene sentido para las

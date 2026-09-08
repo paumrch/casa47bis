@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
  * referirse a una solicitud (elegibilidad, baremación) o a un contrato
  * (estar al corriente de pago durante la vigencia del arrendamiento).
  *
- * Guarda el origen —consulta automática o documento aportado—, la fecha y
+ * Guarda el origen -consulta automática o documento aportado-, la fecha y
  * la evidencia, tal como exige §5.2.
  */
 return new class extends Migration

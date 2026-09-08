@@ -28,7 +28,7 @@ use App\Integrations\Contracts\NotificationGateway;
  *
  * LA DISTINCIÓN QUE HACE ESTA CLASE, Y QUE ES LA IMPORTANTE
  *
- * Los actos que producen efectos jurídicos —la admisión, la exclusión, la adjudicación—
+ * Los actos que producen efectos jurídicos -la admisión, la exclusión, la adjudicación-
  * se notifican de forma FEHACIENTE, porque desde ese momento corren plazos para recurrir.
  * Lo demás son avisos de cortesía.
  *

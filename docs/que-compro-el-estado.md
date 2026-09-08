@@ -23,8 +23,8 @@ Y una consecuencia aritmética que merece pararse:
 
 Ese es el precio implícito de la hora de mantenimiento evolutivo. Para situarlo: es
 **menos de lo que cuesta la hora de un desarrollador junior** en España en 2026 una vez
-cargados los costes de empresa. Si el licitador ofertó más horas —y consta que se ofertaron
-5.000 adicionales—, el precio implícito baja aún más, hasta ~15,24 €/hora.
+cargados los costes de empresa. Si el licitador ofertó más horas -y consta que se ofertaron
+5.000 adicionales-, el precio implícito baja aún más, hasta ~15,24 €/hora.
 
 Esto no es una acusación. Es una observación sobre cómo está diseñado el incentivo: la
 fórmula del pliego hace que **ofertar más horas abarate la hora**, no que aumente el
@@ -38,8 +38,8 @@ de mercado.
 
 ## 2. Qué equipo paga eso
 
-A tarifas de consultoría al sector público —entre 45 y 70 €/hora facturados, con una hora
-productiva anual en torno a 1.680—, 971.698 € en dos años sostienen:
+A tarifas de consultoría al sector público -entre 45 y 70 €/hora facturados, con una hora
+productiva anual en torno a 1.680-, 971.698 € en dos años sostienen:
 
 | Tarifa facturada | Horas totales | Personas equivalentes a tiempo completo |
 |---|---|---|
@@ -48,9 +48,9 @@ productiva anual en torno a 1.680—, 971.698 € en dos años sostienen:
 | 70 €/h | 13.881 h | **4,1** |
 
 Es decir: entre **cuatro y seis personas durante dos años**, según la tarifa. Y en una
-entrega de consultoría eso no significa cuatro seniors: significa una pirámide —jefe de
+entrega de consultoría eso no significa cuatro seniors: significa una pirámide -jefe de
 proyecto, arquitecto a tiempo parcial, dos o tres desarrolladores de perfil medio, alguien
-de pruebas—, con la parte de gestión, reporting y coordinación que un contrato público
+de pruebas-, con la parte de gestión, reporting y coordinación que un contrato público
 exige y que consume tiempo real.
 
 **Este es el punto que hay que entender bien: el dinero no es absurdo. Lo que es
@@ -90,7 +90,7 @@ Eso hay que justificarlo, no afirmarlo.
 La estimación de la Fase 1 fueron **55 persona-mes**. Se parte en dos mitades que se
 comportan de forma radicalmente distinta:
 
-**Trabajo mecánico — se comprime mucho** (~28 PM → **10-12 PM**)
+**Trabajo mecánico, se comprime mucho** (~28 PM → **10-12 PM**)
 
 | Trabajo | Por qué se comprime |
 |---|---|
@@ -102,7 +102,7 @@ comportan de forma radicalmente distinta:
 | Documentación técnica | |
 | Accesibilidad estructural | Semántica correcta desde el primer intento |
 
-**Trabajo irreducible — apenas se comprime** (~27 PM → **20-22 PM**)
+**Trabajo irreducible, apenas se comprime** (~27 PM → **20-22 PM**)
 
 | Trabajo | Por qué resiste |
 |---|---|
@@ -167,7 +167,7 @@ El obstáculo se disuelve si se deja de tratar el problema como un bloque.
 ```
 
 La certificación ENS es una propiedad **del operador**, no del software. Si el sistema es
-aburrido —contenedor OCI, PostgreSQL, almacenamiento S3— cualquier operador certificado
+aburrido (contenedor OCI, PostgreSQL, almacenamiento S3) cualquier operador certificado
 puede ejecutarlo, y **puede sustituirse sin tocar una línea de código**.
 
 Eso convierte la certificación de barrera de entrada en servicio contratable en un mercado

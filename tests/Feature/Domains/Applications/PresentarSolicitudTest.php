@@ -152,7 +152,7 @@ final class PresentarSolicitudTest extends TestCase
     /**
      * LA PRUEBA CENTRAL.
      *
-     * Se rompe el último paso de la operación —la escritura en la bandeja de salida— y
+     * Se rompe el último paso de la operación (la escritura en la bandeja de salida) y
      * se comprueba que NADA de lo anterior queda confirmado: ni el cambio de estado, ni
      * la transición, ni la auditoría.
      *

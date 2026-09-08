@@ -16,7 +16,7 @@ use App\Integrations\Contracts\Values\VerificationRequest;
  * POR QUÉ ESTE PUERTO EXISTE Y POR QUÉ TIENE ESTA FORMA
  *
  * 1. El dominio no puede saber que al otro lado hay SOAP. Si mañana la Administración
- *    publica una API REST —y llevan años intentándolo—, se cambia el adaptador y el
+ *    publica una API REST -y llevan años intentándolo-, se cambia el adaptador y el
  *    dominio no se entera.
  *
  * 2. `unavailable()` no es un caso de error: es un RESULTADO LEGÍTIMO del negocio. Un

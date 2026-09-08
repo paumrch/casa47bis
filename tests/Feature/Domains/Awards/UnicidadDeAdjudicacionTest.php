@@ -20,8 +20,8 @@ use Tests\TestCase;
  * administrativo nulo, dos personas con una expectativa de derecho sobre el mismo
  * inmueble y un problema que se resuelve en los tribunales.
  *
- * Es exactamente el tipo de fallo que aparece bajo concurrencia —dos gestores
- * resolviendo a la vez, o un reintento de la cola— y que no se manifiesta jamás en
+ * Es exactamente el tipo de fallo que aparece bajo concurrencia -dos gestores
+ * resolviendo a la vez, o un reintento de la cola- y que no se manifiesta jamás en
  * pruebas secuenciales.
  *
  * La garantía NO está en el código de la aplicación. Está en un índice único parcial

@@ -10,7 +10,7 @@ namespace App\Domains\Documents;
  * `containsSpecialCategoryData()` marca los tipos que, además de datos personales
  * corrientes, contienen datos de categoría especial del art. 9 RGPD. El certificado de
  * discapacidad es el caso claro: revela información de salud. El resto de tipos de esta
- * lista son datos identificativos, económicos o laborales — sensibles por lo que
+ * lista son datos identificativos, económicos o laborales, sensibles por lo que
  * permiten decidir (el acceso a una vivienda pública), pero no de categoría especial en
  * el sentido estricto del reglamento.
  *

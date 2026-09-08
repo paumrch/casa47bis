@@ -16,8 +16,8 @@ use App\Domains\Documents\ScanStatus;
  * con un proceso externo es justo lo que separa un puerto de un adaptador.
  *
  * Esta clase existe para que el dominio y sus pruebas puedan ejercitar el flujo
- * completo —subida, estado pendiente, descarga bloqueada, descarga permitida tras el
- * análisis— sin necesitar un antivirus real levantado. Que sea trivial es la garantía:
+ * completo -subida, estado pendiente, descarga bloqueada, descarga permitida tras el
+ * análisis- sin necesitar un antivirus real levantado. Que sea trivial es la garantía:
  * si escaneara de verdad, ya no sería una implementación de pruebas.
  */
 final class AlwaysCleanScanner implements MalwareScanner

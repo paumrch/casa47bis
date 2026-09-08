@@ -15,8 +15,8 @@ use Tests\TestCase;
  * El portal público: contenido, filtros y accesibilidad estructural.
  *
  * La comprobación de fondo es que **el contenido está en el HTML servido**. Todo lo demás
- * —que se indexe, que lo lea un lector de pantalla sin esperar, que funcione en un móvil
- * viejo con mala red, que aparezca rápido— se sigue de ahí.
+ * -que se indexe, que lo lea un lector de pantalla sin esperar, que funcione en un móvil
+ * viejo con mala red, que aparezca rápido- se sigue de ahí.
  */
 final class PortalPublicoTest extends TestCase
 {

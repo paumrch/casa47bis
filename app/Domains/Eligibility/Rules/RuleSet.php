@@ -13,8 +13,8 @@ use App\Domains\Eligibility\Values\EligibilityResult;
  * POR QUÉ ESTO ESTÁ VERSIONADO
  *
  * Las reglas cambian: cambia el IPREM cada año, cambian los umbrales, cambian las
- * excepciones. Y una solicitud resuelta en 2026 debe poder reevaluarse en 2029 —ante un
- * recurso, una inspección o un tribunal— con las reglas que estaban vigentes cuando se
+ * excepciones. Y una solicitud resuelta en 2026 debe poder reevaluarse en 2029 -ante un
+ * recurso, una inspección o un tribunal- con las reglas que estaban vigentes cuando se
  * resolvió, no con las de hoy.
  *
  * Por eso la solicitud almacena la versión del conjunto de reglas que se le aplicó, y

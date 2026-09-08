@@ -25,8 +25,8 @@ use Tests\TestCase;
 /**
  * Emitir la URL firmada de descarga de un documento.
  *
- * Se audita la EMISIÓN, no la descarga —el porqué está en el comentario de
- * `IssueDocumentUrl»—, así que la prueba que demuestra la auditoría comprueba que se
+ * Se audita la EMISIÓN, no la descarga -el porqué está en el comentario de
+ * `IssueDocumentUrl»-, así que la prueba que demuestra la auditoría comprueba que se
  * escribe un evento al pedir la URL, no que se escriba al abrirla.
  */
 final class EmitirUrlDocumentoTest extends TestCase
@@ -125,8 +125,8 @@ final class EmitirUrlDocumentoTest extends TestCase
 
         $this->assertNotSame('', $url);
 
-        // No se afirma la vigencia exacta a partir de la URL —cada proveedor firma de
-        // forma distinta—, se afirma lo que el dominio garantiza: se registra un evento
+        // No se afirma la vigencia exacta a partir de la URL -cada proveedor firma de
+        // forma distinta-, se afirma lo que el dominio garantiza: se registra un evento
         // de auditoría con una fecha de caducidad en minutos, no en horas, a partir del
         // instante de la emisión.
         $evento = DB::table('audit_events')

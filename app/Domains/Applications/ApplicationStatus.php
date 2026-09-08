@@ -9,7 +9,7 @@ namespace App\Domains\Applications;
  *
  * Esta enumeración es la única fuente de verdad del procedimiento. No hay un motor
  * de procesos externo, y es deliberado: un procedimiento administrativo cambia cuando
- * cambia la norma —no semanalmente—, y su modificación exige análisis, pruebas y
+ * cambia la norma -no semanalmente-, y su modificación exige análisis, pruebas y
  * despliegue controlado porque afecta a derechos de las personas.
  *
  * Tener el flujo aquí significa que está versionado en git, que se revisa como código

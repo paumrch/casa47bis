@@ -1,0 +1,40 @@
+# Artefactos de render
+docs/**/*.html
+!docs/assets/**
+
+# Entorno
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials*
+
+# Dependencias y builds
+node_modules/
+vendor/
+dist/
+build/
+.cache/
+
+# Datos y respaldos — nunca al repositorio
+*.sql
+*.sqlite
+*.dump
+backups/
+data/
+*.csv
+*.xlsx
+
+# Documentos descargados de terceros (pliegos, PDFs)
+docs/research/fuentes/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
